@@ -1,0 +1,248 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap');
+
+
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+
+
+@layer base {
+  :root {
+    --background: 40 33% 98%;
+    --foreground: 230 25% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 230 25% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 230 25% 15%;
+
+    --primary: 235 65% 25%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 235 30% 95%;
+    --secondary-foreground: 235 65% 25%;
+
+    --muted: 230 20% 94%;
+    --muted-foreground: 230 15% 45%;
+
+    --accent: 15 85% 60%;
+    --accent-foreground: 0 0% 100%;
+
+    --success: 155 70% 40%;
+    --success-foreground: 0 0% 100%;
+
+    --warning: 40 95% 55%;
+    --warning-foreground: 230 25% 15%;
+
+    --destructive: 0 75% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 230 20% 90%;
+    --input: 230 20% 90%;
+    --ring: 235 65% 25%;
+
+    --radius: 0.75rem;
+
+    /* Custom LMS tokens */
+    --gradient-hero: linear-gradient(135deg, hsl(235 65% 25%) 0%, hsl(255 60% 35%) 50%, hsl(15 85% 60%) 100%);
+    --gradient-card: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(40 33% 98%) 100%);
+    --gradient-accent: linear-gradient(135deg, hsl(15 85% 55%) 0%, hsl(25 90% 60%) 100%);
+    --gradient-dark: linear-gradient(135deg, hsl(235 65% 20%) 0%, hsl(255 55% 30%) 100%);
+
+    --shadow-sm: 0 1px 2px 0 hsl(230 25% 15% / 0.03);
+    --shadow-md: 0 4px 6px -1px hsl(230 25% 15% / 0.05), 0 2px 4px -2px hsl(230 25% 15% / 0.05);
+    --shadow-lg: 0 10px 15px -3px hsl(230 25% 15% / 0.08), 0 4px 6px -4px hsl(230 25% 15% / 0.05);
+    --shadow-xl: 0 20px 25px -5px hsl(230 25% 15% / 0.1), 0 8px 10px -6px hsl(230 25% 15% / 0.08);
+    --shadow-glow: 0 0 40px hsl(15 85% 60% / 0.2);
+    --shadow-card: 0 4px 24px hsl(235 65% 25% / 0.06);
+
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 230 25% 15%;
+    --sidebar-primary: 235 65% 25%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 235 30% 95%;
+    --sidebar-accent-foreground: 235 65% 25%;
+    --sidebar-border: 230 20% 90%;
+    --sidebar-ring: 235 65% 25%;
+  }
+
+  .dark {
+    --background: 230 25% 8%;
+    --foreground: 40 20% 95%;
+
+    --card: 230 25% 12%;
+    --card-foreground: 40 20% 95%;
+
+    --popover: 230 25% 12%;
+    --popover-foreground: 40 20% 95%;
+
+    --primary: 40 20% 95%;
+    --primary-foreground: 230 25% 8%;
+
+    --secondary: 230 20% 18%;
+    --secondary-foreground: 40 20% 95%;
+
+    --muted: 230 20% 18%;
+    --muted-foreground: 230 15% 60%;
+
+    --accent: 15 85% 60%;
+    --accent-foreground: 0 0% 100%;
+
+    --success: 155 70% 45%;
+    --success-foreground: 0 0% 100%;
+
+    --warning: 40 95% 55%;
+    --warning-foreground: 230 25% 15%;
+
+    --destructive: 0 65% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 230 20% 20%;
+    --input: 230 20% 20%;
+    --ring: 40 20% 95%;
+
+    --gradient-hero: linear-gradient(135deg, hsl(235 50% 15%) 0%, hsl(255 45% 25%) 50%, hsl(15 70% 45%) 100%);
+    --gradient-card: linear-gradient(180deg, hsl(230 25% 12%) 0%, hsl(230 25% 10%) 100%);
+    --gradient-dark: linear-gradient(135deg, hsl(230 25% 8%) 0%, hsl(255 40% 20%) 100%);
+
+    --shadow-card: 0 4px 24px hsl(0 0% 0% / 0.3);
+
+    --sidebar-background: 230 25% 10%;
+    --sidebar-foreground: 40 20% 95%;
+    --sidebar-primary: 15 85% 60%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 230 20% 15%;
+    --sidebar-accent-foreground: 40 20% 95%;
+    --sidebar-border: 230 20% 18%;
+    --sidebar-ring: 15 85% 60%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    overflow-y: scroll;
+    overflow-x: hidden;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+    width: 100%;
+  }
+
+  /* Override Radix UI's padding/margin compensation since we force the scrollbar */
+  body[style*="overflow: hidden"],
+  body[data-scroll-locked] {
+    padding-right: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  /* Prevent fixed elements from shifting when Radix UI/Shadcn dialogs/selects open */
+  .fixed {
+    padding-right: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: 'Playfair Display', serif;
+  }
+}
+
+@layer utilities {
+  .gradient-hero {
+    background: var(--gradient-hero);
+  }
+
+  .gradient-card {
+    background: var(--gradient-card);
+  }
+
+  .gradient-accent {
+    background: var(--gradient-accent);
+  }
+
+  .gradient-dark {
+    background: var(--gradient-dark);
+  }
+
+  .shadow-card {
+    box-shadow: var(--shadow-card);
+  }
+
+  .shadow-glow {
+    box-shadow: var(--shadow-glow);
+  }
+
+  .text-gradient {
+    background: var(--gradient-hero);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .glass {
+    background: hsl(var(--background) / 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .animate-fade-up {
+    animation: fadeUp 0.6s ease-out forwards;
+  }
+
+  .animate-scale-in {
+    animation: scaleIn 0.4s ease-out forwards;
+  }
+
+  @keyframes float {
+
+    0%,
+    100% {
+      transform: translateY(0px);
+    }
+
+    50% {
+      transform: translateY(-20px);
+    }
+  }
+
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes scaleIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+}
