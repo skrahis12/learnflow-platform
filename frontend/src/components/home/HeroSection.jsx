@@ -9,35 +9,8 @@ import {
 } from "@/components/ui/dialog";
 
 const HeroSection = () => {
-  const [activeUsers, setActiveUsers] = useState(1250);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      // Simulate active users fluctuation (randomly add/subtract 1-5 users)
-      setActiveUsers(prev => {
-        const change = Math.floor(Math.random() * 11) - 5; // -5 to +5
-        const newValue = prev + change;
-        return newValue > 1000 ? newValue : 1000; // Keep above 1000
-      });
-    }, 3000);
-
-    return () => clearInterval(interval);
-  }, []);
 
   const stats = [
-    {
-      icon: Users,
-      value: (
-        <div className="flex items-center gap-2">
-          {activeUsers.toLocaleString()}
-          <span className="relative flex h-3 w-3">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
-          </span>
-        </div>
-      ),
-      label: "Active Students Live"
-    },
     { icon: BookOpen, value: "500+", label: "Courses" },
     { icon: Award, value: "95%", label: "Success Rate" },
   ];
@@ -86,29 +59,10 @@ const HeroSection = () => {
                   <ArrowRight className="w-5 h-5" />
                 </Button>
               </Link>
-
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button variant="heroOutline" size="xl" className="w-full sm:w-auto">
-                    <Play className="w-5 h-5" />
-                    Watch Demo
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-[800px] p-0 overflow-hidden bg-black border-none">
-                  <div className="aspect-video w-full">
-                    <video
-                      src="https://assets.mixkit.co/videos/preview/mixkit-monitor-with-green-programming-code-typing-in-terminal-42353-large.mp4"
-                      className="w-full h-full object-cover"
-                      controls
-                      autoPlay
-                    />
-                  </div>
-                </DialogContent>
-              </Dialog>
             </div>
 
             {/* Stats */}
-            <div className="grid grid-cols-3 gap-6 animate-fade-up" style={{ animationDelay: "0.4s" }}>
+            <div className="grid grid-cols-2 gap-6 animate-fade-up" style={{ animationDelay: "0.4s" }}>
               {stats.map((stat) => (
                 <div key={stat.label} className="text-center lg:text-left">
                   <div className="flex items-center justify-center lg:justify-start gap-2 mb-1">
@@ -129,14 +83,6 @@ const HeroSection = () => {
               {/* Main card */}
               <div className="bg-card/90 backdrop-blur-xl rounded-3xl p-6 shadow-2xl border border-accent-foreground/10">
                 <div className="aspect-video bg-black rounded-2xl mb-4 flex items-center justify-center overflow-hidden relative group/hero">
-                  <video
-                    src="https://assets.mixkit.co/videos/preview/mixkit-monitor-with-green-programming-code-typing-in-terminal-42353-large.mp4"
-                    className="absolute inset-0 w-full h-full object-cover opacity-80"
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                  />
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="w-16 h-16 rounded-full bg-accent/20 backdrop-blur-md flex items-center justify-center border border-white/30 animate-pulse">
                       <Code className="w-8 h-8 text-accent" />

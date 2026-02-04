@@ -1,79 +1,82 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
     FileText, Download, Layout, Code, PenTool, Database,
-    Search, BookOpen, ExternalLink, Filter
+    Search, BookOpen, ExternalLink, Filter, Loader2
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { fetchResources, fetchResourceById } from "@/services/resourceApi";
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+} from "@/components/ui/dialog";
 
-const resources = [
-    {
-        id: "1",
-        title: "Mastering React 2024",
-        type: "E-book",
-        category: "Development",
-        description: "A comprehensive guide to building modern web applications with React 18, Server Components, and Next.js.",
-        icon: Code,
-        color: "text-blue-500",
-        bg: "bg-blue-500/10",
-    },
-    {
-        id: "2",
-        title: "Ultimate UI Design Kit",
-        type: "Template",
-        category: "Design",
-        description: "Complete Figma design system for education platforms, including 50+ hand-crafted components.",
-        icon: Layout,
-        color: "text-purple-500",
-        bg: "bg-purple-500/10",
-    },
-    {
-        id: "3",
-        title: "Python for Data Science",
-        type: "Cheat Sheet",
-        category: "Data Science",
-        description: "One-page reference for NumPy, Pandas, and Scikit-Learn essential functions and syntax.",
-        icon: Database,
-        color: "text-cyan-500",
-        bg: "bg-cyan-500/10",
-    },
-    {
-        id: "4",
-        title: "Freelance Project Planner",
-        type: "Tool",
-        category: "Business",
-        description: "Interactive Notion template to manage your clients, project timelines, and invoicing in one place.",
-        icon: FileText,
-        color: "text-amber-500",
-        bg: "bg-amber-500/10",
-    },
-    {
-        id: "5",
-        title: "Portfolio Starter Kit",
-        type: "Source Code",
-        category: "Development",
-        description: "Highly optimized, SEO-friendly Next.js portfolio template with Tailwind CSS and Framer Motion.",
-        icon: Code,
-        color: "text-emerald-500",
-        bg: "bg-emerald-500/10",
-    },
-    {
-        id: "6",
-        title: "UX Research Principles",
-        type: "Guide",
-        category: "Design",
-        description: "Downloadable PDF guide covering quantitative and qualitative user research methodologies.",
-        icon: PenTool,
-        color: "text-rose-500",
-        bg: "bg-rose-500/10",
-    }
-];
+const categories = ["All", "Development", "Backend", "Design", "Data Science", "Business"];
 
-const categories = ["All", "Development", "Design", "Data Science", "Business"];
+const iconMap = {
+    "Code": Code,
+    "FileText": FileText,
+    "Layout": Layout,
+    "Database": Database,
+    "PenTool": PenTool,
+    "Search": Search, // Fallback if needed
+    "BookOpen": BookOpen
+};
 
 const Resources = () => {
     const [activeCategory, setActiveCategory] = useState("All");
     const [searchQuery, setSearchQuery] = useState("");
+    const [resources, setResources] = useState([]);
+    const [selectedResource, setSelectedResource] = useState(null);
+    const [viewLoading, setViewLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const [downloadingId, setDownloadingId] = useState(null);
+
+    useEffect(() => {
+        const loadData = async () => {
+            try {
+                const data = await fetchResources();
+                setResources(data);
+            } catch (error) {
+                console.error("Failed to fetch resources:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        loadData();
+    }, []);
+
+    // Lock body scroll when modal is open
+    useEffect(() => {
+        if (selectedResource || viewLoading) {
+            document.documentElement.style.overflow = "hidden";
+            document.body.style.overflow = "hidden";
+            document.body.style.overscrollBehavior = "none";
+        } else {
+            document.documentElement.style.overflow = "";
+            document.body.style.overflow = "";
+            document.body.style.overscrollBehavior = "";
+        }
+        return () => {
+            document.documentElement.style.overflow = "";
+            document.body.style.overflow = "";
+            document.body.style.overscrollBehavior = "";
+        };
+    }, [selectedResource, viewLoading]);
+
+    // Handle Browser Back Button for Modal
+    useEffect(() => {
+        const handlePopState = () => {
+            if (selectedResource || viewLoading) {
+                setSelectedResource(null);
+                setViewLoading(false);
+            }
+        };
+        window.addEventListener('popstate', handlePopState);
+        return () => window.removeEventListener('popstate', handlePopState);
+    }, [selectedResource, viewLoading]);
 
     const filteredResources = resources.filter(res => {
         const matchesCategory = activeCategory === "All" || res.category === activeCategory;
@@ -82,37 +85,78 @@ const Resources = () => {
         return matchesCategory && matchesSearch;
     });
 
+    const handleView = async (resource) => {
+        if (resource.downloadUrl) {
+            window.open(resource.downloadUrl, '_blank');
+            return;
+        }
+
+        // Push state so Back Button works
+        window.history.pushState({ modalOpen: true }, "");
+
+        try {
+            setViewLoading(true);
+            setSelectedResource(resource); // Open modal with basic info immediately
+
+            // Fetch detailed content (simulating API call)
+            const detailedResource = await fetchResourceById(resource.id);
+            setSelectedResource(detailedResource);
+        } catch (error) {
+            console.error("Failed to fetch resource details:", error);
+            alert(`Failed to load resource details: ${error.message}`);
+            setSelectedResource(null); // Close modal on error
+        } finally {
+            setViewLoading(false);
+        }
+    };
+
     const handleDownload = (resource) => {
-        // 1. Create a dummy file blob
-        const content = `This is a downloadable resource: ${resource.title}\n\nType: ${resource.type}\nDescription: ${resource.description}`;
-        const blob = new Blob([content], { type: "text/plain" });
-        const url = window.URL.createObjectURL(blob);
+        if (resource.downloadUrl) {
+            window.open(resource.downloadUrl, '_blank');
+            return;
+        }
 
-        // 2. Trigger download
-        const link = document.createElement("a");
-        link.href = url;
-        const filename = `${resource.title.replace(/\s+/g, '_')}.txt`;
-        link.download = filename;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        window.URL.revokeObjectURL(url);
+        setDownloadingId(resource.id);
 
-        // 3. Save to downloads list (shared with Dashboard)
-        const savedDownloads = localStorage.getItem("dashboard_downloads");
-        const currentDownloads = savedDownloads ? JSON.parse(savedDownloads) : [];
+        // Simulate network delay for download animation
+        setTimeout(() => {
+            let content = resource.content;
+            let type = "text/html";
+            let extension = resource.extension || "html";
 
-        const newDownload = {
-            id: Date.now(),
-            name: filename,
-            date: new Date().toLocaleDateString(),
-            size: "15 KB" // Mock size
-        };
+            if (!content) {
+                content = `This is a downloadable resource placeholder for: ${resource.title}\n\nType: ${resource.type}\nDescription: ${resource.description}`;
+                type = "text/plain";
+                extension = "txt";
+            }
 
-        const updatedDownloads = [newDownload, ...currentDownloads];
-        localStorage.setItem("dashboard_downloads", JSON.stringify(updatedDownloads));
+            const blob = new Blob([content], { type: type });
+            const url = window.URL.createObjectURL(blob);
 
-        alert(`Downloaded ${filename}`);
+            const link = document.createElement("a");
+            link.href = url;
+            const filename = `${resource.title.replace(/\s+/g, '_')}.${extension}`;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(url);
+
+            const savedDownloads = localStorage.getItem("dashboard_downloads");
+            const currentDownloads = savedDownloads ? JSON.parse(savedDownloads) : [];
+
+            const newDownload = {
+                id: Date.now(),
+                name: filename,
+                date: new Date().toLocaleDateString(),
+                size: content.length > 1000 ? "1.2 MB" : "15 KB"
+            };
+
+            const updatedDownloads = [newDownload, ...currentDownloads];
+            localStorage.setItem("dashboard_downloads", JSON.stringify(updatedDownloads));
+
+            setDownloadingId(null);
+        }, 1500);
     };
 
     return (
@@ -169,44 +213,74 @@ const Resources = () => {
                         </div>
 
                         {/* Resources Grid */}
-                        {filteredResources.length > 0 ? (
+                        {loading ? (
+                            <div className="flex flex-col items-center justify-center py-20 animate-fade-up">
+                                <Loader2 className="w-10 h-10 animate-spin text-accent mb-4" />
+                                <p className="text-muted-foreground">Loading resources...</p>
+                            </div>
+                        ) : filteredResources.length > 0 ? (
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                                {filteredResources.map((resource, index) => (
-                                    <div
-                                        key={resource.id}
-                                        className="group bg-card rounded-[2rem] border border-border p-8 hover:shadow-xl hover:border-accent/20 transition-all duration-300 animate-fade-up"
-                                        style={{ animationDelay: `${index * 0.05}s` }}
-                                    >
-                                        <div className="flex items-start justify-between mb-6">
-                                            <div className={`w-14 h-14 rounded-2xl ${resource.bg} flex items-center justify-center group-hover:scale-110 transition-transform`}>
-                                                <resource.icon className={`w-7 h-7 ${resource.color}`} />
+                                {filteredResources.map((resource, index) => {
+                                    const IconComponent = iconMap[resource.iconName] || FileText;
+                                    return (
+                                        <div
+                                            key={resource.id}
+                                            onClick={() => handleView(resource)}
+                                            className="group bg-card rounded-[2rem] border border-border p-8 hover:shadow-xl hover:border-accent/20 transition-all duration-300 animate-fade-up cursor-pointer"
+                                            style={{ animationDelay: `${index * 0.05}s` }}
+                                        >
+                                            <div className="flex items-start justify-between mb-6">
+                                                <div className={`w-14 h-14 rounded-2xl ${resource.bg} flex items-center justify-center group-hover:scale-110 transition-transform`}>
+                                                    <IconComponent className={`w-7 h-7 ${resource.color}`} />
+                                                </div>
+                                                <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground bg-muted px-3 py-1 rounded-full">
+                                                    {resource.type}
+                                                </span>
                                             </div>
-                                            <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground bg-muted px-3 py-1 rounded-full">
-                                                {resource.type}
-                                            </span>
-                                        </div>
 
-                                        <h3 className="text-xl font-bold text-foreground mb-3 group-hover:text-accent transition-colors">
-                                            {resource.title}
-                                        </h3>
-                                        <p className="text-muted-foreground text-sm leading-relaxed mb-8">
-                                            {resource.description}
-                                        </p>
+                                            <h3 className="text-xl font-bold text-foreground mb-3 group-hover:text-accent transition-colors">
+                                                {resource.title}
+                                            </h3>
+                                            <p className="text-muted-foreground text-sm leading-relaxed mb-8">
+                                                {resource.description}
+                                            </p>
 
-                                        <div className="flex items-center gap-3">
-                                            <Button
-                                                className="flex-1 rounded-xl bg-accent hover:bg-accent/90"
-                                                onClick={() => handleDownload(resource)}
-                                            >
-                                                <Download className="w-4 h-4 mr-2" />
-                                                Download Now
-                                            </Button>
-                                            <Button variant="outline" size="icon" className="rounded-xl">
-                                                <ExternalLink className="w-4 h-4" />
-                                            </Button>
+                                            <div className="flex items-center gap-3">
+                                                <Button
+                                                    className="flex-1 rounded-xl bg-accent hover:bg-accent/90"
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        handleDownload(resource);
+                                                    }}
+                                                    disabled={downloadingId === resource.id}
+                                                >
+                                                    {downloadingId === resource.id ? (
+                                                        <>
+                                                            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                                                            Downloading...
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            <Download className="w-4 h-4 mr-2" />
+                                                            {resource.downloadUrl ? "Open Link" : "Download Now"}
+                                                        </>
+                                                    )}
+                                                </Button>
+                                                <Button
+                                                    variant="outline"
+                                                    size="icon"
+                                                    className="rounded-xl"
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        handleView(resource);
+                                                    }}
+                                                >
+                                                    <ExternalLink className="w-4 h-4" />
+                                                </Button>
+                                            </div>
                                         </div>
-                                    </div>
-                                ))}
+                                    );
+                                })}
                             </div>
                         ) : (
                             <div className="py-20 text-center">
@@ -226,6 +300,8 @@ const Resources = () => {
                         )}
                     </div>
                 </section>
+
+
 
                 {/* Newsletter / Feature */}
                 <section className="py-24 bg-accent/5">
@@ -256,6 +332,54 @@ const Resources = () => {
                     </div>
                 </section>
             </main>
+
+
+            {/* Resource Viewer Modal */}
+            <Dialog open={!!selectedResource || viewLoading} onOpenChange={(open) => {
+                if (!open) {
+                    if (window.history.state?.modalOpen) {
+                        window.history.back();
+                    } else {
+                        setSelectedResource(null);
+                        setViewLoading(false);
+                    }
+                }
+            }}>
+                <DialogContent className="max-w-[100vw] w-screen h-screen flex flex-col p-0 gap-0 overflow-hidden rounded-none border-0 active:outline-none focus:outline-none">
+                    {viewLoading && !selectedResource ? (
+                        <div className="flex flex-col items-center justify-center h-full">
+                            <Loader2 className="w-12 h-12 animate-spin text-accent mb-4" />
+                            <p className="text-muted-foreground">Fetching resource...</p>
+                        </div>
+                    ) : (
+                        <>
+                            <DialogHeader className="p-4 border-b bg-muted/20">
+                                <DialogTitle className="flex items-center gap-2">
+                                    {selectedResource?.title}
+                                    <span className="text-xs font-normal text-muted-foreground border px-2 py-0.5 rounded-full bg-background">
+                                        Preview
+                                    </span>
+                                </DialogTitle>
+                            </DialogHeader>
+                            <div className="flex-1 w-full bg-white relative">
+                                {viewLoading && (
+                                    <div className="absolute inset-0 flex items-center justify-center bg-white/80 z-10">
+                                        <Loader2 className="w-8 h-8 animate-spin text-accent" />
+                                    </div>
+                                )}
+                                {selectedResource && (
+                                    <iframe
+                                        title={selectedResource.title}
+                                        srcDoc={selectedResource.content}
+                                        className="w-full h-full border-0"
+                                        sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"
+                                    />
+                                )}
+                            </div>
+                        </>
+                    )}
+                </DialogContent>
+            </Dialog>
         </div>
     );
 };
