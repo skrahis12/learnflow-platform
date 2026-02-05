@@ -64,15 +64,7 @@ const allCategories = [
         image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80",
         videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-digital-animation-of-lines-and-dots-connecting-30514-large.mp4",
     },
-    {
-        name: "Photography",
-        icon: Camera,
-        count: 45,
-        description: "DSLR, lightning, and photo editing secrets.",
-        color: "from-violet-500/20 to-purple-500/20",
-        hoverColor: "text-violet-500",
-        image: "https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=800&q=80",
-    },
+
     {
         name: "Cybersecurity",
         icon: Shield,
@@ -82,15 +74,7 @@ const allCategories = [
         hoverColor: "text-red-500",
         image: "https://images.unsplash.com/photo-1563206767-5b1d972d9323?w=800&q=80",
     },
-    {
-        name: "Music Production",
-        icon: Music,
-        count: 67,
-        description: "Mixing, mastering, and digital composition.",
-        color: "from-rose-500/20 to-pink-500/20",
-        hoverColor: "text-rose-500",
-        image: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=800&q=80",
-    },
+
     {
         name: "Artificial Intelligence",
         icon: Brain,
@@ -100,15 +84,7 @@ const allCategories = [
         hoverColor: "text-purple-500",
         image: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=800&q=80",
     },
-    {
-        name: "International Languages",
-        icon: Languages,
-        count: 34,
-        description: "Spanish, French, German, and Mandarin.",
-        color: "from-teal-500/20 to-emerald-500/20",
-        hoverColor: "text-teal-500",
-        image: "https://images.unsplash.com/photo-1564564321837-a57b7070ac4f?w=800&q=80",
-    },
+
     {
         name: "Cloud Computing",
         icon: Globe,

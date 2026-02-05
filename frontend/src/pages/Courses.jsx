@@ -14,11 +14,8 @@ const categories = [
   "Digital Marketing",
   "Mobile Apps",
   "Data Science",
-  "Photography",
   "Cybersecurity",
-  "Music Production",
   "Artificial Intelligence",
-  "International Languages",
   "Cloud Computing"
 ];
 
@@ -45,240 +42,816 @@ const calculateRating = (viewsStr, likesStr) => {
   return rating.toFixed(1);
 };
 
-const baseCourses = [
+
+export const allCourses = [
+  // --- WEB DEVELOPMENT ---
   {
-    id: "1",
-    title: "Complete HTML Development Course",
-    instructor: "freeCodeCamp.org",
-    channelName: "freeCodeCamp.org",
-    thumbnail: "https://images.unsplash.com/photo-1542831371-29b0f74f9713?w=600",
-    videoUrl: "https://www.youtube.com/embed/HcOc7P5BMi4",
-    studentsCount: 12500,
-    views: "7.5M+",
-    likes: "300K",
-    subs: "9.4M",
-    price: 0,
-    originalPrice: 0,
-    duration: "2h 2m",
+    id: "web-1",
+    title: "HTML & CSS Full Course - Beginner to Pro",
+    instructor: "SuperSimpleDev",
+    thumbnail: "https://i.ytimg.com/vi/G3e-cpL7ofc/maxresdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/G3e-cpL7ofc",
+    studentsCount: 1500000,
+    views: "1.5M",
+    likes: "45K",
+    duration: "6h 30m",
     level: "Beginner",
     category: "Web Development",
+    rating: "4.9"
   },
   {
-    id: "2",
-    title: "UI/UX Design Masterclass",
-    instructor: "Michael Chen",
-    thumbnail: "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=600",
-    studentsCount: 8300,
-    views: "85K",
-    likes: "4.2K",
-    price: 79.99,
-    originalPrice: 149.99,
-    duration: "28 hours",
+    id: "web-2",
+    title: "JavaScript Tutorial for Beginners: Learn JavaScript in 1 Hour",
+    instructor: "Programming with Mosh",
+    thumbnail: "https://i.ytimg.com/vi/W6NZfCO5SIk/maxresdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/W6NZfCO5SIk",
+    studentsCount: 3200000,
+    views: "3.2M",
+    likes: "120K",
+    duration: "1h 00m",
+    level: "Beginner",
+    category: "Web Development",
+    rating: "4.8"
+  },
+  {
+    id: "web-3",
+    title: "React JS - React Tutorial for Beginners",
+    instructor: "Programming with Mosh",
+    thumbnail: "https://i.ytimg.com/vi/Ke90Tje7VS0/maxresdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/Ke90Tje7VS0",
+    studentsCount: 2100000,
+    views: "2.1M",
+    likes: "85K",
+    duration: "2h 25m",
     level: "Intermediate",
-    category: "Graphic Design",
+    category: "Web Development",
+    rating: "4.7"
   },
   {
-    id: "3",
-    title: "Machine Learning Full Course with Projects (2025)",
-    instructor: "WsCube Tech",
-    channelName: "WsCube Tech",
-    thumbnail: "https://i.ytimg.com/vi/k_x4r-7a8X8/maxresdefault.jpg",
-    videoUrl: "https://www.youtube.com/embed/k_x4r-7a8X8",
-    studentsCount: 182000,
-    views: "182K+",
-    likes: "8.5K",
-    subs: "4M+",
-    price: 0,
-    originalPrice: 0,
-    duration: "7h 44m",
+    id: "web-4",
+    title: "Node.js and Express.js - Full Course",
+    instructor: "freeCodeCamp.org",
+    thumbnail: "https://i.ytimg.com/vi/Oe421EPjeBE/maxresdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/Oe421EPjeBE",
+    studentsCount: 950000,
+    views: "950K",
+    likes: "32K",
+    duration: "8h 15m",
     level: "Advanced",
-    category: "Data Science",
+    category: "Web Development",
+    rating: "4.8"
   },
   {
-    id: "4",
-    title: "Digital Marketing Strategy",
-    instructor: "James Wilson",
-    thumbnail: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600",
-    studentsCount: 6800,
-    views: "45K",
-    likes: "1.8K",
-    price: 69.99,
-    originalPrice: 129.99,
-    duration: "18 hours",
+    id: "web-5",
+    title: "Full Stack Web Development for Beginners",
+    instructor: "Edureka",
+    thumbnail: "https://i.ytimg.com/vi/Q33KBiDriJY/maxresdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/Q33KBiDriJY",
+    studentsCount: 450000,
+    views: "450K",
+    likes: "15K",
+    duration: "10h 30m",
+    level: "Beginner",
+    category: "Web Development",
+    rating: "4.6"
+  },
+
+  // --- GRAPHIC DESIGN ---
+  {
+    id: "design-2",
+    title: "Figma UI/UX Design Full Course",
+    instructor: "Simplilearn",
+    thumbnail: "https://i.ytimg.com/vi/5c32g4pG1MA/maxresdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/5c32g4pG1MA",
+    studentsCount: 2000000,
+    views: "2M",
+    likes: "60K",
+    duration: "4h 00m",
+    level: "Beginner",
+    category: "Graphic Design",
+    rating: "4.9"
+  },
+  {
+    id: "design-3",
+    title: "Adobe Photoshop for Beginners | FREE COURSE",
+    instructor: "Envato Tuts+",
+    thumbnail: "https://i.ytimg.com/vi/IyR_uYsRdPs/maxresdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/IyR_uYsRdPs",
+    studentsCount: 1200000,
+    views: "1.2M",
+    likes: "40K",
+    duration: "3h 10m",
+    level: "Beginner",
+    category: "Graphic Design",
+    rating: "4.9"
+  },
+  {
+    id: "design-4",
+    title: "Graphic Design Full Course - Beginner to Pro",
+    instructor: "Simplilearn",
+    thumbnail: "https://i.ytimg.com/vi/s8k-qB6hS4U/maxresdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/s8k-qB6hS4U",
+    studentsCount: 900000,
+    views: "900K",
+    likes: "35K",
+    duration: "6h 30m",
+    level: "All Levels",
+    category: "Graphic Design",
+    rating: "4.7"
+  },
+
+  // --- BUSINESS STRATEGY ---
+
+  {
+    id: "biz-3",
+    title: "Project Management Full Course",
+    instructor: "Edureka",
+    thumbnail: "https://i.ytimg.com/vi/5d169lT_4v4/maxresdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/5d169lT_4v4",
+    studentsCount: 410000,
+    views: "410K",
+    likes: "12K",
+    duration: "2h 00m",
+    level: "Intermediate",
+    category: "Business Strategy",
+    rating: "4.6"
+  },
+  {
+    id: "biz-4",
+    title: "Entrepreneurship 101",
+    instructor: "Harvard Innovation Labs",
+    thumbnail: "https://i.ytimg.com/vi/lPh5h8I4F3I/maxresdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/lPh5h8I4F3I",
+    studentsCount: 850000,
+    views: "850K",
+    likes: "25K",
+    duration: "1h 15m",
+    level: "Beginner",
+    category: "Business Strategy",
+    rating: "4.8"
+  },
+
+
+  // --- DIGITAL MARKETING ---
+  {
+    id: "mark-1",
+    title: "Digital Marketing Course for Beginners",
+    instructor: "Simplilearn",
+    thumbnail: "https://i.ytimg.com/vi/bixR-KIJKYM/maxresdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/bixR-KIJKYM",
+    studentsCount: 500000,
+    views: "500K",
+    likes: "18K",
+    duration: "2h 00m",
     level: "Beginner",
     category: "Digital Marketing",
+    rating: "4.6"
   },
   {
-    id: "5",
-    title: "React Native Mobile Development",
-    instructor: "Alex Thompson",
-    thumbnail: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=600",
-    studentsCount: 9400,
-    views: "120K",
-    likes: "5.5K",
-    price: 94.99,
-    originalPrice: 189.99,
-    duration: "38 hours",
+    id: "mark-2",
+    title: "SEO Tutorial for Beginners",
+    instructor: "Simplilearn",
+    thumbnail: "https://i.ytimg.com/vi/DvwXlbfiwVQ/maxresdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/DvwXlbfiwVQ",
+    studentsCount: 1500000,
+    views: "1.5M",
+    likes: "40K",
+    duration: "8h 30m",
+    level: "Beginner",
+    category: "Digital Marketing",
+    rating: "4.8"
+  },
+
+  {
+    id: "mark-4",
+    title: "Google Ads Full Course",
+    instructor: "Simplilearn",
+    thumbnail: "https://i.ytimg.com/vi/_0tT5_GvbIQ/maxresdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/_0tT5_GvbIQ",
+    studentsCount: 600000,
+    views: "600K",
+    likes: "15K",
+    duration: "5h 00m",
+    level: "Intermediate",
+    category: "Digital Marketing",
+    rating: "4.7"
+  },
+
+
+  // --- MOBILE APPS ---
+  {
+    id: "mob-1",
+    title: "React Native Tutorial for Beginners",
+    instructor: "Programming with Mosh",
+    thumbnail: "https://i.ytimg.com/vi/0-S5a0eXPoc/maxresdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/0-S5a0eXPoc",
+    studentsCount: 1800000,
+    views: "1.8M",
+    likes: "60K",
+    duration: "2h 05m",
+    level: "Beginner",
+    category: "Mobile Apps",
+    rating: "4.8"
+  },
+  {
+    id: "mob-2",
+    title: "Flutter for Beginners",
+    instructor: "freeCodeCamp.org",
+    thumbnail: "https://i.ytimg.com/vi/VPvVD8t02U8/maxresdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/VPvVD8t02U8",
+    studentsCount: 2000000,
+    views: "2M",
+    likes: "50K",
+    duration: "37h 00m",
+    level: "Beginner",
+    category: "Mobile Apps",
+    rating: "4.9"
+  },
+  {
+    id: "mob-3",
+    title: "Android Development for Beginners",
+    instructor: "freeCodeCamp.org",
+    thumbnail: "https://i.ytimg.com/vi/fis26HvvDII/maxresdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/fis26HvvDII",
+    studentsCount: 1100000,
+    views: "1.1M",
+    likes: "35K",
+    duration: "11h 30m",
     level: "Intermediate",
     category: "Mobile Apps",
+    rating: "4.8"
   },
   {
-    id: "6",
-    title: "Photography Fundamentals",
-    instructor: "Lisa Anderson",
-    thumbnail: "https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=600",
-    studentsCount: 5200,
-    views: "30K",
-    likes: "1.2K",
-    price: 59.99,
-    originalPrice: 99.99,
-    duration: "15 hours",
-    level: "Beginner",
-    category: "Photography",
-  },
-  {
-    id: "7",
-    title: "Data Science FULL Course for Beginners",
-    instructor: "WsCube Tech",
-    channelName: "WsCube Tech",
-    thumbnail: "https://i.ytimg.com/vi/gDZ6czwuQ18/maxresdefault.jpg",
-    videoUrl: "https://www.youtube.com/embed/gDZ6czwuQ18",
-    studentsCount: 250000,
-    views: "250K+",
+    id: "mob-4",
+    title: "Swift Programming Tutorial for Beginners",
+    instructor: "CodeWithChris",
+    thumbnail: "https://i.ytimg.com/vi/F9UC9DY-vIU/maxresdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/F9UC9DY-vIU",
+    studentsCount: 400000,
+    views: "400K",
     likes: "12K",
-    subs: "4M+",
-    price: 0,
-    originalPrice: 0,
-    duration: "27h 00m",
+    duration: "3h 15m",
+    level: "Beginner",
+    category: "Mobile Apps",
+    rating: "4.7"
+  },
+
+
+  // --- DATA SCIENCE ---
+  {
+    id: "data-1",
+    title: "Data Science Full Course - Learn Data Science in 10 Hours",
+    instructor: "Edureka",
+    thumbnail: "https://i.ytimg.com/vi/-ETQ97mXXF0/maxresdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/-ETQ97mXXF0",
+    studentsCount: 2500000,
+    views: "2.5M",
+    likes: "75K",
+    duration: "10h 00m",
     level: "Beginner",
     category: "Data Science",
+    rating: "4.8"
   },
   {
-    id: "8",
-    title: "Business Leadership Essentials",
-    instructor: "Jennifer Moore",
-    thumbnail: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=600",
-    studentsCount: 4800,
-    views: "25K",
-    likes: "950",
-    price: 74.99,
-    originalPrice: 149.99,
-    duration: "22 hours",
+    id: "data-2",
+    title: "Python for Data Science - Course for Beginners",
+    instructor: "freeCodeCamp.org",
+    thumbnail: "https://i.ytimg.com/vi/LHBE6Q9XlzI/maxresdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/LHBE6Q9XlzI",
+    studentsCount: 3000000,
+    views: "3M",
+    likes: "95K",
+    duration: "12h 00m",
+    level: "Intermediate",
+    category: "Data Science",
+    rating: "4.9"
+  },
+  {
+    id: "data-3",
+    title: "Statistics for Data Science",
+    instructor: "Great Learning",
+    thumbnail: "https://i.ytimg.com/vi/Vfo5le26IhY/maxresdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/Vfo5le26IhY",
+    studentsCount: 800000,
+    views: "800K",
+    likes: "20K",
+    duration: "4h 30m",
+    level: "Intermediate",
+    category: "Data Science",
+    rating: "4.7"
+  },
+  {
+    id: "data-4",
+    title: "Data Analysis with Python - Full Course for Beginners",
+    instructor: "freeCodeCamp.org",
+    thumbnail: "https://i.ytimg.com/vi/r-uOLxNrNk8/maxresdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/r-uOLxNrNk8",
+    studentsCount: 3000000,
+    views: "3M",
+    likes: "85K",
+    duration: "4h 30m",
+    level: "Intermediate",
+    category: "Data Science",
+    rating: "4.8"
+  },
+  {
+    id: "data-5",
+    title: "Machine Learning with Python",
+    instructor: "Simplilearn",
+    thumbnail: "https://i.ytimg.com/vi/ukzFI9rgwfU/maxresdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/ukzFI9rgwfU",
+    studentsCount: 650000,
+    views: "650K",
+    likes: "18K",
+    duration: "8h 00m",
     level: "Advanced",
-    category: "Business Strategy",
+    category: "Data Science",
+    rating: "4.7"
   },
+
+  // --- CYBERSECURITY ---
   {
-    id: "9",
-    title: "Learn 90% of PYTHON in Just 12 Hours",
-    instructor: "WsCube Tech",
-    channelName: "WsCube Tech",
-    thumbnail: "https://i.ytimg.com/vi/e_tqS8yX3h0/maxresdefault.jpg",
-    videoUrl: "https://www.youtube.com/embed/e_tqS8yX3h0",
-    studentsCount: 100000,
-    views: "100K+",
-    likes: "4.8K",
-    subs: "4M+",
-    price: 0,
-    originalPrice: 0,
+    id: "cyber-1",
+    title: "Ethical Hacking Full Course - Learn Ethical Hacking in 12 Hours",
+    instructor: "Simplilearn",
+    thumbnail: "https://i.ytimg.com/vi/3Kq1MIfTWCE/maxresdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/3Kq1MIfTWCE",
+    studentsCount: 2000000,
+    views: "2M",
+    likes: "60K",
     duration: "12h 00m",
     level: "Beginner",
-    category: "Web Development",
+    category: "Cybersecurity",
+    rating: "4.8"
   },
   {
-    id: "10",
-    title: "Ethical Hacking for Beginners",
-    instructor: "Cyber Security Hub",
-    thumbnail: "https://images.unsplash.com/photo-1563206767-5b1d972d9323?w=600",
-    studentsCount: 15400,
-    views: "200K",
-    likes: "8.2K",
-    duration: "10 hours",
+    id: "cyber-2",
+    title: "Cyber Security Full Course",
+    instructor: "Great Learning",
+    thumbnail: "https://i.ytimg.com/vi/fS6eNf9XvFk/maxresdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/fS6eNf9XvFk",
+    studentsCount: 3500000,
+    views: "3.5M",
+    likes: "125K",
+    duration: "11h 30m",
     level: "Beginner",
     category: "Cybersecurity",
+    rating: "4.9"
   },
   {
-    id: "11",
-    title: "Music Production Masterclass",
-    instructor: "Audio Academy",
-    thumbnail: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=600",
-    studentsCount: 8900,
-    views: "60K",
-    likes: "3.5K",
-    duration: "24 hours",
+    id: "cyber-3",
+    title: "Ethical Hacking Course",
+    instructor: "Edureka",
+    thumbnail: "https://i.ytimg.com/vi/dz7Ntp7KQGA/maxresdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/dz7Ntp7KQGA",
+    studentsCount: 1500000,
+    views: "1.5M",
+    likes: "40K",
+    duration: "4h 00m",
+    level: "Intermediate",
+    category: "Cybersecurity",
+    rating: "4.9"
+  },
+  {
+    id: "cyber-4",
+    title: "Network Security Tutorial",
+    instructor: "freeCodeCamp.org",
+    thumbnail: "https://i.ytimg.com/vi/qiQR5rTSshw/maxresdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/qiQR5rTSshw",
+    studentsCount: 400000,
+    views: "400K",
+    likes: "12K",
+    duration: "5h 30m",
+    level: "Intermediate",
+    category: "Cybersecurity",
+    rating: "4.7"
+  },
+  {
+    id: "cyber-5",
+    title: "Penetration Testing | Ethical Hacking Tutorial",
+    instructor: "Edureka",
+    thumbnail: "https://i.ytimg.com/vi/fNz8ykqJltc/maxresdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/fNz8ykqJltc",
+    studentsCount: 1500000,
+    views: "1.5M",
+    likes: "45K",
+    duration: "1h 30m",
     level: "Advanced",
-    category: "Music Production",
+    category: "Cybersecurity",
+    rating: "4.8"
   },
+
+  // --- ARTIFICIAL INTELLIGENCE ---
   {
-    id: "12",
-    title: "AI & Machine Learning A-Z",
-    instructor: "Tech Explorers",
-    thumbnail: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=600",
-    studentsCount: 22000,
-    views: "150K",
-    likes: "7.8K",
-    duration: "42 hours",
-    level: "All Levels",
-    category: "Artificial Intelligence",
-  },
-  {
-    id: "13",
-    title: "Learn Spanish: Consversational Skills",
-    instructor: "Language Pro",
-    thumbnail: "https://images.unsplash.com/photo-1564564321837-a57b7070ac4f?w=600",
-    studentsCount: 12000,
-    views: "90K",
-    likes: "4.1K",
-    duration: "30 hours",
+    id: "ai-1",
+    title: "Artificial Intelligence Full Course | AI Tutorial for Beginners",
+    instructor: "Edureka",
+    thumbnail: "https://i.ytimg.com/vi/JMUxmLyrhSk/maxresdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/JMUxmLyrhSk",
+    studentsCount: 1200000,
+    views: "1.2M",
+    likes: "40K",
+    duration: "4h 30m",
     level: "Beginner",
-    category: "International Languages",
+    category: "Artificial Intelligence",
+    rating: "4.8"
   },
   {
-    id: "14",
-    title: "AWS Certified Solutions Architect",
-    instructor: "Cloud Gurus",
-    thumbnail: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600",
-    studentsCount: 35000,
-    views: "210K",
-    likes: "10.5K",
-    duration: "50 hours",
+    id: "ai-2",
+    title: "Machine Learning Full Course",
+    instructor: "Edureka",
+    thumbnail: "https://i.ytimg.com/vi/GwIoJAO7M6k/maxresdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/GwIoJAO7M6k",
+    studentsCount: 1200000,
+    views: "1.2M",
+    likes: "35K",
+    duration: "10h 00m",
+    level: "Intermediate",
+    category: "Artificial Intelligence",
+    rating: "4.8"
+  },
+  {
+    id: "ai-3",
+    title: "Deep Learning Crash Course",
+    instructor: "freeCodeCamp.org",
+    thumbnail: "https://i.ytimg.com/vi/VyWAvY2CF9c/maxresdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/VyWAvY2CF9c",
+    studentsCount: 500000,
+    views: "500K",
+    likes: "15K",
+    duration: "3h 45m",
+    level: "Advanced",
+    category: "Artificial Intelligence",
+    rating: "4.9"
+  },
+  {
+    id: "ai-4",
+    title: "Neural Networks from Scratch",
+    instructor: "freeCodeCamp.org",
+    thumbnail: "https://i.ytimg.com/vi/Wo5dMEP_BbI/maxresdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/Wo5dMEP_BbI",
+    studentsCount: 4000000,
+    views: "4M",
+    likes: "150K",
+    duration: "4h 00m",
+    level: "Advanced",
+    category: "Artificial Intelligence",
+    rating: "5.0"
+  },
+  {
+    id: "ai-5",
+    title: "TensorFlow 2.0 Complete Course",
+    instructor: "freeCodeCamp.org",
+    thumbnail: "https://i.ytimg.com/vi/tPYj3fFJGjk/maxresdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/tPYj3fFJGjk",
+    studentsCount: 300000,
+    views: "300K",
+    likes: "12K",
+    duration: "14h 00m",
+    level: "Intermediate",
+    category: "Artificial Intelligence",
+    rating: "4.7"
+  },
+
+  // --- CLOUD COMPUTING ---
+  {
+    id: "cloud-1",
+    title: "Cloud Computing Full Course | Cloud Computing Tutorial",
+    instructor: "Simplilearn",
+    thumbnail: "https://i.ytimg.com/vi/M988_fsOSWo/maxresdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/M988_fsOSWo",
+    studentsCount: 2000000,
+    views: "2M",
+    likes: "50K",
+    duration: "3h 00m",
+    level: "Beginner",
+    category: "Cloud Computing",
+    rating: "4.8"
+  },
+  {
+    id: "cloud-2",
+    title: "AWS Certified Cloud Practitioner - Full Course",
+    instructor: "freeCodeCamp.org",
+    thumbnail: "https://i.ytimg.com/vi/3hLmDS179YE/maxresdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/3hLmDS179YE",
+    studentsCount: 2000000,
+    views: "2M",
+    likes: "60K",
+    duration: "13h 00m",
+    level: "Beginner",
+    category: "Cloud Computing",
+    rating: "4.9"
+  },
+  {
+    id: "cloud-3",
+    title: "Azure Fundamentals Course",
+    instructor: "freeCodeCamp.org",
+    thumbnail: "https://i.ytimg.com/vi/NKEFWyqJ5dy/maxresdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/NKEFWyqJ5dy",
+    studentsCount: 800000,
+    views: "800K",
+    likes: "25K",
+    duration: "8h 30m",
+    level: "Intermediate",
+    category: "Cloud Computing",
+    rating: "4.8"
+  },
+  {
+    id: "cloud-4",
+    title: "Google Cloud Digital Leader Certification",
+    instructor: "freeCodeCamp.org",
+    thumbnail: "https://i.ytimg.com/vi/U9k6k4o1kQo/maxresdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/U9k6k4o1kQo",
+    studentsCount: 600000,
+    views: "600K",
+    likes: "18K",
+    duration: "6h 00m",
+    level: "Intermediate",
+    category: "Cloud Computing",
+    rating: "4.7"
+  },
+  {
+    id: "cloud-5",
+    title: "Docker & Kubernetes Tutorial",
+    instructor: "TechWorld with Nana",
+    thumbnail: "https://i.ytimg.com/vi/3c-iBn73dDE/maxresdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/3c-iBn73dDE",
+    studentsCount: 1500000,
+    views: "1.5M",
+    likes: "45K",
+    duration: "3h 30m",
     level: "Advanced",
     category: "Cloud Computing",
+    rating: "4.9"
+  },
+
+  // --- HINDI COURSES & EXTRAS ---
+
+  // WEB DEV (Hindi)
+  {
+    id: "hindi-web-1",
+    title: "Web Development Full Course In Hindi",
+    instructor: "WsCube Tech",
+    thumbnail: "https://i.ytimg.com/vi/l1EssrLxt7E/maxresdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/l1EssrLxt7E",
+    studentsCount: 5000000,
+    views: "5M",
+    likes: "200K",
+    duration: "21h 00m",
+    level: "Beginner",
+    category: "Web Development",
+    rating: "4.9"
+  },
+  {
+    id: "hindi-web-2",
+    title: "React JS Tutorial in Hindi",
+    instructor: "Thapa Technical",
+    thumbnail: "https://i.ytimg.com/vi/tiLWCNFzThE/maxresdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/tiLWCNFzThE",
+    studentsCount: 1200000,
+    views: "1.2M",
+    likes: "60K",
+    duration: "2h 15m",
+    level: "Intermediate",
+    category: "Web Development",
+    rating: "4.8"
+  },
+  {
+    id: "hindi-web-3",
+    title: "JavaScript Projects For Beginners (Hindi)",
+    instructor: "WsCube Tech",
+    thumbnail: "https://i.ytimg.com/vi/KGkiIBTq0y0/maxresdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/KGkiIBTq0y0",
+    studentsCount: 950000,
+    views: "950K",
+    likes: "32K",
+    duration: "2h 30m",
+    level: "Intermediate",
+    category: "Web Development",
+    rating: "4.8"
+  },
+
+  // DATA SCIENCE (Hindi)
+  {
+    id: "hindi-data-1",
+    title: "Data Science Roadmap 2025 (Hindi)",
+    instructor: "Krish Naik",
+    thumbnail: "https://i.ytimg.com/vi/ua-CiDNNj30/maxresdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/ua-CiDNNj30",
+    studentsCount: 900000,
+    views: "900K",
+    likes: "45K",
+    duration: "20m",
+    level: "All Levels",
+    category: "Data Science",
+    rating: "4.9"
+  },
+  {
+    id: "hindi-data-2",
+    title: "Python Tutorial For Beginners (Hindi)",
+    instructor: "CodeWithHarry",
+    thumbnail: "https://i.ytimg.com/vi/vLqTf2b6GZw/maxresdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/vLqTf2b6GZw",
+    studentsCount: 800000,
+    views: "800K",
+    likes: "50K",
+    duration: "1h 30m",
+    level: "Beginner",
+    category: "Data Science",
+    rating: "4.8"
+  },
+  {
+    id: "hindi-data-3",
+    title: "Machine Learning Tutorial in Hindi",
+    instructor: "WsCube Tech",
+    thumbnail: "https://i.ytimg.com/vi/1vsmaEfbnoE/maxresdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/1vsmaEfbnoE",
+    studentsCount: 1500000,
+    views: "1.5M",
+    likes: "60K",
+    duration: "4h 00m",
+    level: "Beginner",
+    category: "Data Science",
+    rating: "4.7"
+  },
+
+  // AI & ML (Hindi)
+  {
+    id: "hindi-ai-1",
+    title: "Artificial Intelligence Full Course in Hindi",
+    instructor: "Great Learning",
+    thumbnail: "https://i.ytimg.com/vi/kwibwSgC4eU/maxresdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/kwibwSgC4eU",
+    studentsCount: 800000,
+    views: "800K",
+    likes: "30K",
+    duration: "6h 00m",
+    level: "Beginner",
+    category: "Artificial Intelligence",
+    rating: "4.8"
+  },
+
+  // CYBERSECURITY (Hindi)
+  {
+    id: "hindi-cyber-1",
+    title: "Cyber Security Full Course in Hindi",
+    instructor: "Great Learning",
+    thumbnail: "https://i.ytimg.com/vi/XKEEhZw6oHw/maxresdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/XKEEhZw6oHw",
+    studentsCount: 800000,
+    views: "800K",
+    likes: "35K",
+    duration: "4h 00m",
+    level: "Beginner",
+    category: "Cybersecurity",
+    rating: "4.7"
+  },
+
+
+  // DESIGN (Hindi/Urdu)
+
+
+
+
+
+  // PROGRAMMING LANGUAGES (Hindi)
+  {
+    id: "hindi-prog-1",
+    title: "C Language Full Course in Hindi",
+    instructor: "Apna College",
+    thumbnail: "https://i.ytimg.com/vi/irqbmMNs2Bo/maxresdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/irqbmMNs2Bo",
+    studentsCount: 3000000,
+    views: "3M",
+    likes: "150K",
+    duration: "10h 30m",
+    level: "Beginner",
+    category: "Web Development",
+    rating: "4.9"
+  },
+  {
+    id: "hindi-prog-2",
+    title: "C++ Full Course In Hindi",
+    instructor: "Apna College",
+    thumbnail: "https://i.ytimg.com/vi/z9bZufPHZOg/maxresdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/z9bZufPHZOg",
+    studentsCount: 3500000,
+    views: "3.5M",
+    likes: "150K",
+    duration: "10h 00m",
+    level: "Beginner",
+    category: "Web Development",
+    rating: "4.9"
+  },
+  {
+    id: "hindi-prog-3",
+    title: "Java Full Course in Hindi",
+    instructor: "Great Learning",
+    thumbnail: "https://i.ytimg.com/vi/UmnCZ7-9yDY/maxresdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/bm0OyhwFDuY",
+    studentsCount: 2500000,
+    views: "2.5M",
+    likes: "100K",
+    duration: "10h 30m",
+    level: "Beginner",
+    category: "Web Development",
+    rating: "4.8"
+  },
+  {
+    id: "hindi-prog-4",
+    title: "SQL Full Course in Hindi",
+    instructor: "WsCube Tech",
+    thumbnail: "https://i.ytimg.com/vi/BPHAr4QGGVE/maxresdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/BPHAr4QGGVE",
+    studentsCount: 1200000,
+    views: "1.2M",
+    likes: "40K",
+    duration: "3h 00m",
+    level: "Beginner",
+    category: "Data Science",
+    rating: "4.8"
+  },
+
+  // EXTRAS (English)
+  {
+    id: "extra-1",
+    title: "Modern JavaScript From The Beginning",
+    instructor: "Traversy Media",
+    thumbnail: "https://i.ytimg.com/vi/hdI2bqOjy3c/maxresdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/hdI2bqOjy3c",
+    studentsCount: 2500000,
+    views: "2.5M",
+    likes: "80K",
+    duration: "2h 00m",
+    level: "Intermediate",
+    category: "Web Development",
+    rating: "4.9"
+  },
+  {
+    id: "extra-2",
+    title: "Machine Learning for Everybody",
+    instructor: "freeCodeCamp.org",
+    thumbnail: "https://i.ytimg.com/vi/i_LwzRVP7bg/maxresdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/i_LwzRVP7bg",
+    studentsCount: 1500000,
+    views: "1.5M",
+    likes: "60K",
+    duration: "4h 00m",
+    level: "Beginner",
+    category: "Data Science",
+    rating: "4.8"
+  },
+
+  // MOBILE APPS (Hindi)
+
+  {
+    id: "hindi-mob-2",
+    title: "Flutter Full Course in Hindi",
+    instructor: "CheezyCode",
+    thumbnail: "https://i.ytimg.com/vi/C-fKAzdTrLU/maxresdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/C-fKAzdTrLU",
+    studentsCount: 600000,
+    views: "600K",
+    likes: "25K",
+    duration: "5h 00m",
+    level: "Beginner",
+    category: "Mobile Apps",
+    rating: "4.7"
+  },
+
+  // CLOUD COMPUTING (Hindi)
+  {
+    id: "hindi-cloud-1",
+    title: "AWS Tutorial For Beginners In Hindi",
+    instructor: "WsCube Tech",
+    thumbnail: "https://i.ytimg.com/vi/k1RI5locZE4/maxresdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/k1RI5locZE4",
+    studentsCount: 800000,
+    views: "800K",
+    likes: "35K",
+    duration: "3h 00m",
+    level: "Beginner",
+    category: "Cloud Computing",
+    rating: "4.8"
+  },
+
+
+  // MORE BUSINESS (Hindi)
+  {
+    id: "hindi-biz-3",
+    title: "Stock Market For Beginners (Hindi)",
+    instructor: "Pushkar Raj Thakur",
+    thumbnail: "https://i.ytimg.com/vi/Xn7KWR9EOGQ/maxresdefault.jpg",
+    videoUrl: "https://www.youtube.com/embed/Xn7KWR9EOGQ",
+    studentsCount: 5000000,
+    views: "5M",
+    likes: "250K",
+    duration: "1h 00m",
+    level: "Beginner",
+    category: "Business Strategy",
+    rating: "4.9"
   }
 ];
-
-// Generate 10 additional mock courses for EACH category
-const generatedCourses = categories.filter(c => c !== "All").flatMap((category) => {
-  return Array.from({ length: 10 }).map((_, i) => {
-    // Generate realistic views/likes
-    const viewsNum = Math.floor(Math.random() * 500000) + 1000;
-    const likesNum = Math.floor(viewsNum * (Math.random() * 0.08 + 0.01)); // 1% to 9% like ratio
-
-    return {
-      id: `gen-${category.toLowerCase().replace(/\s+/g, '-')}-${i}`,
-      title: `${category} Masterclass ${i + 1}`,
-      instructor: `${category} Expert ${i + 1}`,
-      thumbnail: `https://images.unsplash.com/photo-${[
-        "1498050108023-c5249f4df085", "1504639725590-34d0984388bd", "1515879218367-8466d910aaa4",
-        "1531482615713-2afd69097998", "1550751827-4bd374c3f58b", "1526374965328-7f61d4dc18c5"
-      ][i % 6]}?w=600&h=400&fit=crop`,
-      videoUrl: "",
-      studentsCount: Math.floor(Math.random() * 20000) + 500,
-      views: viewsNum > 1000 ? (viewsNum / 1000).toFixed(1) + "K" : viewsNum.toString(),
-      likes: likesNum > 1000 ? (likesNum / 1000).toFixed(1) + "K" : likesNum.toString(),
-      duration: `${Math.floor(Math.random() * 20) + 2}h ${Math.floor(Math.random() * 60)}m`,
-      level: ["Beginner", "Intermediate", "Advanced"][Math.floor(Math.random() * 3)],
-      category: category,
-      price: Math.floor(Math.random() * 100),
-      originalPrice: Math.floor(Math.random() * 100) + 100,
-    };
-  });
-});
-
-// Map over all courses to ensure everyone has a calculated rating
-export const allCourses = [...baseCourses, ...generatedCourses].map(course => ({
-  ...course,
-  rating: calculateRating(course.views || "0", course.likes || "0")
-}));
 const levels = ["All Levels", "Beginner", "Intermediate", "Advanced"];
 const Courses = () => {
   const [searchParams] = useSearchParams();
@@ -320,10 +893,7 @@ const Courses = () => {
         return b.studentsCount - a.studentsCount;
       case "rating":
         return b.rating - a.rating;
-      case "price-low":
-        return a.price - b.price;
-      case "price-high":
-        return b.price - a.price;
+
       default:
         return 0;
     }
@@ -390,8 +960,7 @@ const Courses = () => {
                 <SelectContent>
                   <SelectItem value="popular">Most Popular</SelectItem>
                   <SelectItem value="rating">Highest Rated</SelectItem>
-                  <SelectItem value="price-low">Price: Low to High</SelectItem>
-                  <SelectItem value="price-high">Price: High to Low</SelectItem>
+
                 </SelectContent>
               </Select>
             </div>

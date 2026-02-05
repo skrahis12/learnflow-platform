@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
     FileText, Download, Layout, Code, PenTool, Database,
-    Search, BookOpen, ExternalLink, Filter, Loader2
+    Search, BookOpen, ExternalLink, Filter, Loader2, Video
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { fetchResources, fetchResourceById } from "@/services/resourceApi";
@@ -22,7 +22,8 @@ const iconMap = {
     "Database": Database,
     "PenTool": PenTool,
     "Search": Search, // Fallback if needed
-    "BookOpen": BookOpen
+    "BookOpen": BookOpen,
+    "Video": Video
 };
 
 const Resources = () => {

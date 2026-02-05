@@ -13,63 +13,89 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const handleGoogleLogin = (email, name, avatarUrl) => {
-    const existingUsers = JSON.parse(localStorage.getItem("users") || "[]");
-    let user = existingUsers.find(u => u.email === email);
 
-    if (!user) {
-      user = { email, password: "google-login-dummy-password", name, avatar: avatarUrl };
-      existingUsers.push(user);
-      localStorage.setItem("users", JSON.stringify(existingUsers));
-    }
 
-    localStorage.setItem("currentUser", JSON.stringify(user));
-    toast({
-      title: "Logged in with Google",
-      description: `Welcome back, ${name}!`,
-    });
-    navigate("/dashboard");
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Mock Auth Logic (Implicit Signup)
-    const existingUsers = JSON.parse(localStorage.getItem("users") || "[]");
-    const user = existingUsers.find(u => u.email === email);
+    try {
+      const response = await fetch("/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
 
-    if (user) {
-      // User exists, check password (simple mock check)
-      if (user.password === password) {
-        localStorage.setItem("currentUser", JSON.stringify(user));
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Login failed");
+      }
+
+      // Store Token
+      localStorage.setItem("token", data.token);
+
+      // Fetch User Profile
+      const meResponse = await fetch("/auth/me", {
+        headers: { "Authorization": `Bearer ${data.token}` }
+      });
+
+      if (meResponse.ok) {
+        const meData = await meResponse.json();
+        localStorage.setItem("currentUser", JSON.stringify(meData.user));
+
         toast({
           title: "Welcome back!",
           description: "You have successfully logged in.",
         });
         navigate("/dashboard");
       } else {
-        toast({
-          variant: "destructive",
-          title: "Invalid credentials",
-          description: "The password you entered is incorrect.",
-        });
+        throw new Error("Failed to fetch user profile");
       }
-    } else {
-      // User doesn't exist, create account (Implicit Signup)
-      const newUser = { email, password, name: email.split("@")[0] };
-      existingUsers.push(newUser);
-      localStorage.setItem("users", JSON.stringify(existingUsers));
-      localStorage.setItem("currentUser", JSON.stringify(newUser));
 
+    } catch (error) {
       toast({
-        title: "Account Created",
-        description: `We've created a new account for ${email} and logged you in!`,
+        variant: "destructive",
+        title: "Login failed",
+        description: error.message,
       });
-      navigate("/dashboard");
     }
+  };
+
+
+
+  const [isAddingAccount, setIsAddingAccount] = useState(false);
+  const [newEmail, setNewEmail] = useState("");
+
+  const handleSimulatedGoogleLogin = (email, name = null, avatar = null) => {
+    // 1. Generate details if missing
+    const userName = name || email.split("@")[0];
+    const userAvatar = avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${userName}`;
+
+    // 2. Simulate Backend Logic (Client-side for demo)
+    const existingUsers = JSON.parse(localStorage.getItem("users") || "[]");
+    let user = existingUsers.find(u => u.email === email);
+
+    if (!user) {
+      user = { email, password: "google-dummy-password", name: userName, avatar: userAvatar, role: "student" };
+      existingUsers.push(user);
+      localStorage.setItem("users", JSON.stringify(existingUsers));
+    }
+
+    // 3. Login
+    localStorage.setItem("currentUser", JSON.stringify(user));
+    // Set a dummy token so other parts of the app think we are logged in
+    localStorage.setItem("token", "simulated-google-token-" + Date.now());
+
+    toast({
+      title: "Logged in with Google",
+      description: `Welcome back, ${userName}!`,
+    });
+    navigate("/dashboard");
   };
 
   return (
@@ -142,7 +168,9 @@ const Login = () => {
           </div>
 
           <div className="grid grid-cols-2 gap-4">
-            <Dialog>
+            <Dialog onOpenChange={(open) => {
+              if (!open) setIsAddingAccount(false);
+            }}>
               <DialogTrigger asChild>
                 <Button variant="outline" className="w-full">
                   <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
@@ -156,49 +184,87 @@ const Login = () => {
               </DialogTrigger>
               <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                  <DialogTitle>Sign in with Google</DialogTitle>
+                  <DialogTitle>{isAddingAccount ? "Sign in" : "Sign in with Google"}</DialogTitle>
                   <DialogDescription>
-                    Choose an account to continue to Qurio
+                    {isAddingAccount
+                      ? "to continue to Qurio"
+                      : "Choose an account to continue to Qurio"}
                   </DialogDescription>
                 </DialogHeader>
-                <div className="flex flex-col gap-2 py-4">
-                  <div
-                    className="flex items-center gap-4 p-3 hover:bg-muted rounded-lg cursor-pointer transition-colors border border-transparent hover:border-border"
-                    onClick={() => handleGoogleLogin("demo.user@gmail.com", "Demo User", "https://github.com/shadcn.png")}
-                  >
-                    <Avatar>
-                      <AvatarImage src="https://github.com/shadcn.png" />
-                      <AvatarFallback>DU</AvatarFallback>
-                    </Avatar>
-                    <div className="flex flex-col">
-                      <span className="font-medium">Demo User</span>
-                      <span className="text-sm text-muted-foreground">demo.user@gmail.com</span>
+
+                {isAddingAccount ? (
+                  <div className="flex flex-col gap-4 py-4">
+                    <div className="space-y-2">
+                      <Input
+                        placeholder="Email or phone"
+                        value={newEmail}
+                        onChange={(e) => setNewEmail(e.target.value)}
+                        className="h-12"
+                        autoFocus
+                      />
+                      <Link to="#" className="text-sm text-accent font-medium hover:underline inline-block">
+                        Forgot email?
+                      </Link>
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      Not your computer? Use Guest mode to sign in privately.
+                    </p>
+                    <div className="flex justify-between items-center mt-4">
+                      <Button variant="ghost" onClick={() => setIsAddingAccount(false)}>
+                        Back
+                      </Button>
+                      <Button onClick={() => handleSimulatedGoogleLogin(newEmail)}>
+                        Next
+                      </Button>
                     </div>
                   </div>
-                  <div
-                    className="flex items-center gap-4 p-3 hover:bg-muted rounded-lg cursor-pointer transition-colors border border-transparent hover:border-border"
-                    onClick={() => handleGoogleLogin("alex.dev@gmail.com", "Alex Developer", "https://api.dicebear.com/7.x/avataaars/svg?seed=Alex")}
-                  >
-                    <Avatar>
-                      <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=Alex" />
-                      <AvatarFallback>AD</AvatarFallback>
-                    </Avatar>
-                    <div className="flex flex-col">
-                      <span className="font-medium">Alex Developer</span>
-                      <span className="text-sm text-muted-foreground">alex.dev@gmail.com</span>
+                ) : (
+                  <div className="flex flex-col gap-2 py-4">
+                    {/* Existing Mock Accounts */}
+                    <div
+                      className="flex items-center gap-4 p-3 hover:bg-muted rounded-lg cursor-pointer transition-colors border border-transparent hover:border-border"
+                      onClick={() => handleSimulatedGoogleLogin("demo.user@gmail.com", "Demo User", "https://github.com/shadcn.png")}
+                    >
+                      <Avatar>
+                        <AvatarImage src="https://github.com/shadcn.png" />
+                        <AvatarFallback>DU</AvatarFallback>
+                      </Avatar>
+                      <div className="flex flex-col">
+                        <span className="font-medium">Demo User</span>
+                        <span className="text-sm text-muted-foreground">demo.user@gmail.com</span>
+                      </div>
+                    </div>
+
+                    <div
+                      className="flex items-center gap-4 p-3 hover:bg-muted rounded-lg cursor-pointer transition-colors border border-transparent hover:border-border"
+                      onClick={() => handleSimulatedGoogleLogin("alex.dev@gmail.com", "Alex Developer", "https://api.dicebear.com/7.x/avataaars/svg?seed=Alex")}
+                    >
+                      <Avatar>
+                        <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=Alex" />
+                        <AvatarFallback>AD</AvatarFallback>
+                      </Avatar>
+                      <div className="flex flex-col">
+                        <span className="font-medium">Alex Developer</span>
+                        <span className="text-sm text-muted-foreground">alex.dev@gmail.com</span>
+                      </div>
+                    </div>
+
+                    {/* Use Another Account */}
+                    <div
+                      className="flex items-center gap-4 p-3 hover:bg-muted rounded-lg cursor-pointer transition-colors border border-transparent hover:border-border"
+                      onClick={() => setIsAddingAccount(true)}
+                    >
+                      <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center">
+                        <svg className="w-5 h-5 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                        </svg>
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="font-medium">Use another account</span>
+                      </div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-4 p-3 hover:bg-muted rounded-lg cursor-pointer transition-colors border border-transparent hover:border-border">
-                    <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center">
-                      <svg className="w-5 h-5 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                      </svg>
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="font-medium">Use another account</span>
-                    </div>
-                  </div>
-                </div>
+                )}
               </DialogContent>
             </Dialog>
 

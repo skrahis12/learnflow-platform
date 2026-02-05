@@ -23,6 +23,11 @@ const WelcomeHeader = ({ user }) => {
                         <span className="px-3 py-1 text-xs font-medium rounded-full bg-accent/10 text-accent border border-accent/20 capitalize">
                             {user.role || "Student"}
                         </span>
+                        {user.email && (
+                            <span className="text-sm text-muted-foreground">
+                                {user.email}
+                            </span>
+                        )}
                     </div>
                     <p className="text-muted-foreground">
                         {user.bio || "Continue where you left off and achieve your goals."}

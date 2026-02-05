@@ -89,7 +89,7 @@ const Dashboard = () => {
 
             {/* Sidebar */}
             <div>
-              <DashboardSidebar streak={streak} downloads={downloads} />
+              <DashboardSidebar streak={streak} downloads={downloads} user={user} />
             </div>
           </div>
         </div>

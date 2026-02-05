@@ -11,7 +11,7 @@ import {
 const HeroSection = () => {
 
   const stats = [
-    { icon: BookOpen, value: "500+", label: "Courses" },
+    { icon: BookOpen, value: "50+", label: "Courses" },
     { icon: Award, value: "95%", label: "Success Rate" },
   ];
 

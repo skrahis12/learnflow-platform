@@ -20,6 +20,7 @@ import Pricing from "./pages/Pricing";
 import Resources from "./pages/Resources";
 import MyLearning from "./pages/MyLearning";
 import Downloads from "./pages/Downloads";
+import OAuthSuccess from "./pages/OAuthSuccess";
 import NotFound from "./pages/NotFound";
 import Settings from "./pages/Settings";
 
@@ -27,7 +28,7 @@ const queryClient = new QueryClient();
 
 const AppContent = () => {
   const location = useLocation();
-  const hideLayout = ["/auth", "/login", "/signup"].includes(location.pathname.toLowerCase());
+  const hideLayout = ["/auth", "/login", "/signup", "/oauth-success"].includes(location.pathname.toLowerCase());
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -48,6 +49,7 @@ const AppContent = () => {
           <Route path="/my-learning" element={<MyLearning />} />
           <Route path="/downloads" element={<Downloads />} />
           <Route path="/settings" element={<Settings />} />
+          <Route path="/oauth-success" element={<OAuthSuccess />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>

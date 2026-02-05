@@ -5,6 +5,117 @@ import {
 
 const resourcesData = [
     {
+        id: "26",
+        title: "Python for Beginners - Full Course",
+        type: "Video Tutorial",
+        category: "Development",
+        description: "A comprehensive 4-hour course by freeCodeCamp. Perfect for absolute beginners to learn Python core concepts.",
+        iconName: "Video",
+        color: "text-blue-500",
+        bg: "bg-blue-500/10",
+        content: `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python for Beginners</title>
+    <style>
+        body { margin: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; background-color: #000; color: #fff; font-family: system-ui, sans-serif; }
+        .video-container { position: relative; width: 100%; max-width: 1000px; padding-bottom: 56.25%; /* 16:9 aspect ratio */ height: 0; }
+        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+        .info { margin-top: 20px; text-align: center; padding: 20px; max-width: 800px; }
+        .tag { display: inline-block; background: #333; padding: 5px 12px; border-radius: 20px; font-size: 0.9rem; margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+    <div class="video-container">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/eWRfhZUzrAc" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+    <div class="info">
+        <span class="tag">Beginner Level</span>
+        <h2>Python for Beginners - Full Course</h2>
+        <p>This course will give you a full introduction into all of the core concepts in python. Follow along with the videos and you'll be a python programmer in no time!</p>
+        <p style="color: #aaa; font-size: 0.9rem;">Provided generously by freeCodeCamp.org</p>
+    </div>
+</body>
+</html>
+        `,
+        extension: "html"
+    },
+    {
+        id: "27",
+        title: "Intermediate Python Programming",
+        type: "Video Tutorial",
+        category: "Development",
+        description: "Level up your Python skills with this intermediate course covering objects, data structures, and more.",
+        iconName: "Video",
+        color: "text-green-500",
+        bg: "bg-green-500/10",
+        content: `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intermediate Python</title>
+    <style>
+        body { margin: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; background-color: #0f172a; color: #fff; font-family: system-ui, sans-serif; }
+        .video-container { position: relative; width: 100%; max-width: 1000px; padding-bottom: 56.25%; height: 0; }
+        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; border-radius: 12px; }
+        .info { margin-top: 20px; text-align: center; padding: 20px; max-width: 800px; }
+    </style>
+</head>
+<body>
+    <div class="video-container">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/HGOBQPFzWKo" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+    <div class="info">
+        <h2>Intermediate Python Programming</h2>
+        <p>Take your Python skills to the next level. Covers: Lists, Tuples, Dictionaries, Sets, Strings, Collections, Itertools, Lambda functions, Exceptions and Errors, Logging, JSON, Random Numbers, Decorators, Generators, Multithreading and Multiprocessing, Function Arguments, Shallow vs Deep Copying, Context Managers.</p>
+    </div>
+</body>
+</html>
+        `,
+        extension: "html"
+    },
+    {
+        id: "28",
+        title: "Data Analysis with Python",
+        type: "Video Tutorial",
+        category: "Data Science",
+        description: "Learn how to analyze data using Python, Pandas, NumPy, and Matplotlib in this comprehensive course.",
+        iconName: "Video",
+        color: "text-purple-500",
+        bg: "bg-purple-500/10",
+        content: `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Analysis with Python</title>
+    <style>
+        body { margin: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; background-color: #1e1e1e; color: #fff; font-family: system-ui, sans-serif; }
+        .video-container { position: relative; width: 100%; max-width: 1000px; padding-bottom: 56.25%; height: 0; }
+        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; border-radius: 12px; }
+        .info { margin-top: 20px; text-align: center; padding: 20px; max-width: 800px; }
+    </style>
+</head>
+<body>
+    <div class="video-container">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/r-uOLxNrNk4" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+    <div class="info">
+        <h2>Data Analysis with Python</h2>
+        <p>This course spans several hours and teaches you the entire process of analyzing data using Python. You will learn how to use libraries like Pandas, NumPy, and Matplotlib to inspect, clean, and visualize data.</p>
+    </div>
+</body>
+</html>
+        `,
+        extension: "html"
+    },
+    {
         id: "7",
         title: "React Full Guide & Cheatsheet",
         type: "PDF Guide",

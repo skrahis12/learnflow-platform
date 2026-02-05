@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -14,10 +15,53 @@ const Signup = () => {
     password: "",
     role: "student",
   });
-  const handleSubmit = (e) => {
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle signup - will be connected to backend
-    console.log("Signup:", formData);
+
+    try {
+      // 1. Register User
+      const response = await fetch("/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Registration failed");
+      }
+
+      // 2. Store Token
+      localStorage.setItem("token", data.token);
+
+      // 3. Fetch User Profile
+      const meResponse = await fetch("/auth/me", {
+        headers: { "Authorization": `Bearer ${data.token}` }
+      });
+
+      if (meResponse.ok) {
+        const meData = await meResponse.json();
+        localStorage.setItem("currentUser", JSON.stringify(meData.user));
+      }
+
+      toast({
+        title: "Account created!",
+        description: "Welcome to LearnFlow.",
+      });
+
+      navigate("/dashboard");
+
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Registration failed",
+        description: error.message,
+      });
+    }
   };
   return (<div className="min-h-screen flex">
     {/* Left Panel - Visual */}
