@@ -112,10 +112,10 @@ const Auth = () => {
                     <form onSubmit={handleLoginSubmit} className="h-full flex flex-col items-center justify-center p-8 md:p-12 text-center bg-background">
                         <div className="flex items-center gap-3 mb-6">
                             <div className="w-10 h-10 flex items-center justify-center">
-                                <img src="/logo.png" alt="LearnFlow Icon" className="w-full h-full object-contain" />
+                                <img src={`${import.meta.env.BASE_URL}logo.png`} alt="LearnFlow Icon" className="w-full h-full object-contain" />
                             </div>
                             <div className="h-8 flex items-center">
-                                <img src="/brand-text.png" alt="LearnFlow" className="h-[70%] object-contain dark:brightness-200 brightness-0" />
+                                <img src={`${import.meta.env.BASE_URL}brand-text.png`} alt="LearnFlow" className="h-[70%] object-contain dark:brightness-200 brightness-0" />
                             </div>
                         </div>
                         <h1 className="font-display text-3xl font-bold mb-4">Sign in</h1>

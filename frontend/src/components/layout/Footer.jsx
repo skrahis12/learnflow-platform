@@ -34,10 +34,10 @@ const Footer = () => {
         <div className="col-span-2 lg:col-span-2">
           <Link to="/" className="flex items-center gap-3 mb-4">
             <div className="w-10 h-10 flex items-center justify-center">
-              <img src="/logo.png" alt="Qurio Icon" className="w-full h-full object-contain" />
+              <img src={`${import.meta.env.BASE_URL}logo.png`} alt="LearnFlow Icon" className="w-full h-full object-contain" />
             </div>
             <div className="h-8 flex items-center">
-              <img src="/brand-text.png" alt="Qurio" className="h-[70%] object-contain dark:brightness-200 brightness-0" />
+              <img src={`${import.meta.env.BASE_URL}brand-text.png`} alt="LearnFlow" className="h-[70%] object-contain dark:brightness-200 brightness-0" />
             </div>
           </Link>
           <p className="text-muted-foreground text-sm mb-6 max-w-xs">
@@ -89,7 +89,7 @@ const Footer = () => {
 
       <div className="mt-12 pt-8 border-t border-border flex flex-col md:flex-row items-center justify-between gap-4">
         <p className="text-sm text-muted-foreground">
-          © 2024 Qurio. All rights reserved.
+          © 2024 LearnFlow. All rights reserved.
         </p>
         <p className="text-sm text-muted-foreground">
           Made with ❤️ for learners everywhere

@@ -28,10 +28,10 @@ const Navbar = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3 group">
             <div className="w-10 h-10 flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
-              <img src="/logo.png" alt="LearnFlow Icon" className="w-full h-full object-contain" />
+              <img src={`${import.meta.env.BASE_URL}logo.png`} alt="LearnFlow Icon" className="w-full h-full object-contain" />
             </div>
             <div className="h-8 md:h-10 flex items-center">
-              <img src="/brand-text.png" alt="LearnFlow" className="h-[70%] object-contain dark:brightness-200 brightness-0" />
+              <img src={`${import.meta.env.BASE_URL}brand-text.png`} alt="LearnFlow" className="h-[70%] object-contain dark:brightness-200 brightness-0" />
             </div>
           </Link>
 
