@@ -4,9 +4,8 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
-  relationMode = "prisma"
 }
 
 model User {
@@ -15,6 +14,7 @@ model User {
   email    String @unique
   password String
   role     String @default("student")
+  twoFactorEnabled Boolean @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -22,6 +22,11 @@ model User {
   enrollments   Enrollment[]
   courses       Course[]
   subscriptions Subscription[]
+  
+  // Interactions
+  likes         CourseLike[]
+  followers     InstructorFollow[] @relation("Instructor")
+  following     InstructorFollow[] @relation("Follower")
 }
 
 model Course {
@@ -30,12 +35,24 @@ model Course {
   description  String?
   price        Int // 0 = free, >0 = paid
   videoUrl     String?
-  rating       Float        @default(0)
   thumbnail    String?
+  
+  // Metadata
+  rating       Float        @default(0)
+  studentsCount Int         @default(0)
+  views        String?
+  likesCount   String?      // Display string like "1.5K"
+  likes        CourseLike[]
+  duration     String?
+  level        String?
+  category     String?
+  instructorName String?    @default("LearnFlow Instructor")
+
+
   instructor   User         @relation(fields: [instructorId], references: [id])
   instructorId String
   enrollments  Enrollment[]
-   hidden       Boolean  @default(false) 
+  hidden       Boolean      @default(false) 
   createdAt    DateTime     @default(now())
 }
 
@@ -69,5 +86,27 @@ model Subscription {
 
   user User @relation(fields: [userId], references: [id])
   plan Plan @relation(fields: [planId], references: [id])
+}
+
+model CourseLike {
+  id        String   @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  course    Course   @relation(fields: [courseId], references: [id])
+  courseId  String
+  createdAt DateTime @default(now())
+
+  @@unique([userId, courseId])
+}
+
+model InstructorFollow {
+  id           String   @id @default(uuid())
+  follower     User     @relation("Follower", fields: [followerId], references: [id])
+  followerId   String
+  instructor   User     @relation("Instructor", fields: [instructorId], references: [id])
+  instructorId String
+  createdAt    DateTime @default(now())
+
+  @@unique([followerId, instructorId])
 }
 

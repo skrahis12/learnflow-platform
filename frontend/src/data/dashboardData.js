@@ -113,22 +113,7 @@ export const codingTasks = [
     }
 ];
 
-export const certificates = [
-    {
-        id: "cert-001",
-        title: "Web Development Bootcamp",
-        instructor: "Sarah Johnson",
-        date: "Dec 15, 2025",
-        image: "https://images.unsplash.com/photo-1546410531-bb4caa6b424d?w=400"
-    },
-    {
-        id: "cert-002",
-        title: "React Fundamentals",
-        instructor: "Michael Chen",
-        date: "Jan 10, 2026",
-        image: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=400"
-    }
-];
+
 
 export const sampleTexts = [
     "The quick brown fox jumps over the lazy dog.",

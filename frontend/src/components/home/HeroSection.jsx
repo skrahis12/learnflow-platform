@@ -1,19 +1,32 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Play, Users, BookOpen, Award, ArrowRight, Code } from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { BookOpen, Award, ArrowRight, Code } from "lucide-react";
+import api from "@/services/api";
 
 const HeroSection = () => {
-
-  const stats = [
-    { icon: BookOpen, value: "50+", label: "Courses" },
+  const [enrolledCount, setEnrolledCount] = useState("0+");
+  const [stats, setStats] = useState([
+    { icon: BookOpen, value: "0+", label: "Courses" },
     { icon: Award, value: "95%", label: "Success Rate" },
-  ];
+  ]);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const res = await api.get("/users/public-stats");
+        const data = res.data;
+        setEnrolledCount(`${data.studentCount}+`);
+        setStats([
+          { icon: BookOpen, value: `${data.courseCount}+`, label: "Courses" },
+          { icon: Award, value: "95%", label: "Success Rate" },
+        ]);
+      } catch (error) {
+        console.error("Failed to fetch public stats");
+      }
+    };
+    fetchStats();
+  }, []);
 
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden">
@@ -33,7 +46,7 @@ const HeroSection = () => {
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent-foreground/10 border border-accent-foreground/20 mb-6 animate-fade-up">
               <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
               <span className="text-sm font-medium text-accent-foreground">
-                New courses added weekly
+                Empowering the builders of tomorrow
               </span>
             </div>
 
@@ -100,18 +113,6 @@ const HeroSection = () => {
               </div>
 
               {/* Floating cards */}
-              <div className="absolute -top-6 -right-6 bg-card rounded-2xl p-4 shadow-xl border border-border animate-float">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-success/10 flex items-center justify-center">
-                    <Award className="w-5 h-5 text-success" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-semibold text-foreground">Certificate</p>
-                    <p className="text-xs text-muted-foreground">Upon completion</p>
-                  </div>
-                </div>
-              </div>
-
               <div className="absolute -bottom-4 -left-6 bg-card rounded-2xl p-4 shadow-xl border border-border animate-float" style={{ animationDelay: "1s" }}>
                 <div className="flex items-center gap-3">
                   <div className="flex -space-x-2">
@@ -120,7 +121,7 @@ const HeroSection = () => {
                     ))}
                   </div>
                   <div>
-                    <p className="text-sm font-semibold text-foreground">2.5K+ enrolled</p>
+                    <p className="text-sm font-semibold text-foreground">{enrolledCount} enrolled</p>
                     <p className="text-xs text-muted-foreground">this month</p>
                   </div>
                 </div>

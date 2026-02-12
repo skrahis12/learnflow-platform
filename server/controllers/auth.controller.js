@@ -83,6 +83,7 @@ export const me = async (req, res) => {
         name: req.user.name,
         email: req.user.email,
         role: req.user.role,
+        twoFactorEnabled: req.user.twoFactorEnabled,
         createdAt: req.user.createdAt,
       },
     });

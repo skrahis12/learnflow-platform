@@ -13,6 +13,7 @@ import aiRoutes from "./routes/ai.routes.js";
 import passport from "passport";
 import "./config/passport.js";
 import oauthRoutes from "./routes/oauth.routes.js";
+import interactionRoutes from "./routes/interaction.routes.js";
 
 
 
@@ -58,6 +59,7 @@ app.use("/plans", planRoutes);
 app.use("/ai", aiRoutes);
 app.use(passport.initialize());
 app.use("/auth", oauthRoutes);
+app.use("/interactions", interactionRoutes);
 
 // Global error handling middleware
 app.use((err, req, res, next) => {

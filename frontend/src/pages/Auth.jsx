@@ -57,46 +57,91 @@ const Auth = () => {
         navigate("/dashboard");
     };
 
-    const handleLoginSubmit = (e) => {
+    const handleLoginSubmit = async (e) => {
         e.preventDefault();
-        const existingUsers = JSON.parse(localStorage.getItem("users") || "[]");
-        const user = existingUsers.find(u => u.email === loginEmail);
+        try {
+            const module = await import("@/services/api");
+            const api = module.default;
+            const response = await api.post("/auth/login", { email: loginEmail, password: loginPassword });
 
-        if (user) {
-            if (user.password === loginPassword) {
-                localStorage.setItem("currentUser", JSON.stringify(user));
-                toast({ title: "Welcome back!", description: "You have successfully logged in." });
-                navigate("/dashboard");
-            } else {
-                toast({ variant: "destructive", title: "Invalid credentials", description: "Incorrect password." });
+            // Save token and user info
+            localStorage.setItem("token", response.data.token);
+            // We'll fetch the full user details next
+            try {
+                const userRes = await api.get("/auth/me");
+                localStorage.setItem("currentUser", JSON.stringify(userRes.data.user));
+            } catch (err) {
+                console.warn("Could not fetch user details, using generic info");
+                localStorage.setItem("currentUser", JSON.stringify({ name: "User", email: loginEmail, role: "student" }));
             }
-        } else {
-            // Implicit Signup for Login flow
-            const newUser = { email: loginEmail, password: loginPassword, name: loginEmail.split("@")[0] };
-            existingUsers.push(newUser);
-            localStorage.setItem("users", JSON.stringify(existingUsers));
-            localStorage.setItem("currentUser", JSON.stringify(newUser));
-            toast({ title: "Account Created", description: `New account created for ${loginEmail}!` });
+
+            toast({ title: "Welcome back!", description: "Successfully logged in." });
             navigate("/dashboard");
+
+        } catch (error) {
+            console.error("Real Auth Failed, trying Mock...", error);
+
+            // Fallback to Mock Auth
+            import("@/services/mockAuth").then(async (mock) => {
+                try {
+                    const response = await mock.mockLogin(loginEmail, loginPassword);
+                    localStorage.setItem("token", response.data.token);
+                    localStorage.setItem("currentUser", JSON.stringify(response.data.user));
+
+                    toast({
+                        title: "Demo Mode Active",
+                        description: "Backend unreachable. Logged in with local demo account.",
+                        variant: "default"
+                    });
+                    navigate("/dashboard");
+                } catch (mockError) {
+                    const msg = mockError.response?.data?.message || "Login failed";
+                    toast({ variant: "destructive", title: "Error", description: msg });
+                }
+            });
         }
     };
 
-    const handleSignupSubmit = (e) => {
+    const handleSignupSubmit = async (e) => {
         e.preventDefault();
-        const existingUsers = JSON.parse(localStorage.getItem("users") || "[]");
+        try {
+            const module = await import("@/services/api");
+            const api = module.default;
+            const response = await api.post("/auth/register", signupFormData);
 
-        if (existingUsers.find(u => u.email === signupFormData.email)) {
-            toast({ variant: "destructive", title: "Account exists", description: "Please login instead." });
-            setIsLogin(true);
-            return;
+            localStorage.setItem("token", response.data.token);
+            try {
+                const userRes = await api.get("/auth/me");
+                localStorage.setItem("currentUser", JSON.stringify(userRes.data.user));
+            } catch (err) {
+                localStorage.setItem("currentUser", JSON.stringify({ ...signupFormData }));
+            }
+
+            toast({ title: "Account Created", description: "Welcome to LearnFlow!" });
+            navigate("/dashboard");
+
+        } catch (error) {
+            console.error("Real Auth Failed, trying Mock...", error);
+
+            // Fallback to Mock Auth
+            import("@/services/mockAuth").then(async (mock) => {
+                try {
+                    const response = await mock.mockSignup(signupFormData);
+                    localStorage.setItem("token", response.data.token);
+                    localStorage.setItem("currentUser", JSON.stringify(response.data.user));
+
+                    toast({
+                        title: "Demo Mode Active",
+                        description: "Backend unreachable. Account created locally.",
+                        variant: "default"
+                    });
+                    navigate("/dashboard");
+                } catch (mockError) {
+                    const msg = mockError.response?.data?.message || "Signup failed";
+                    toast({ variant: "destructive", title: "Error", description: msg });
+                }
+            });
         }
-
-        const newUser = { ...signupFormData };
-        existingUsers.push(newUser);
-        localStorage.setItem("users", JSON.stringify(existingUsers));
-        localStorage.setItem("currentUser", JSON.stringify(newUser));
-        toast({ title: "Account Created", description: "Welcome to LearnFlow!" });
-        navigate("/dashboard");
     };
 
     const toggleMode = () => {

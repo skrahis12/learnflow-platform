@@ -1,66 +1,28 @@
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import CourseCard from "@/components/courses/CourseCard";
-import { ArrowRight } from "lucide-react";
-const featuredCourses = [
-  {
-    id: "1",
-    title: "Complete HTML Development Course",
-    instructor: "freeCodeCamp.org",
-    channelName: "freeCodeCamp.org",
-    thumbnail: "https://images.unsplash.com/photo-1542831371-29b0f74f9713?w=600",
-    videoUrl: "https://www.youtube.com/embed/HcOc7P5BMi4",
-    rating: 4.9,
-    studentsCount: 12500,
-    views: "7.5M+",
-    subs: "9.4M",
-    price: 0,
-    originalPrice: 0,
-    duration: "2h 2m",
-    level: "Beginner",
-    category: "Development",
-  },
-  {
-    id: "2",
-    title: "UI/UX Design Masterclass",
-    instructor: "Michael Chen",
-    thumbnail: "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=600",
-    rating: 4.8,
-    studentsCount: 8300,
-    price: 79.99,
-    originalPrice: 149.99,
-    duration: "28 hours",
-    level: "Intermediate",
-    category: "Design",
-  },
-  {
-    id: "3",
-    title: "Machine Learning A-Z",
-    instructor: "Dr. Emily Watson",
-    thumbnail: "https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=600",
-    rating: 4.9,
-    studentsCount: 15200,
-    price: 99.99,
-    originalPrice: 249.99,
-    duration: "56 hours",
-    level: "Advanced",
-    category: "Data Science",
-  },
-  {
-    id: "4",
-    title: "Digital Marketing Strategy",
-    instructor: "James Wilson",
-    thumbnail: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600",
-    rating: 4.7,
-    studentsCount: 6800,
-    price: 69.99,
-    originalPrice: 129.99,
-    duration: "18 hours",
-    level: "Beginner",
-    category: "Marketing",
-  },
-];
+import { ArrowRight, Loader2 } from "lucide-react";
+import api from "@/services/api";
+
 const FeaturedCourses = () => {
+  const [courses, setCourses] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const response = await api.get("/courses?sortBy=popular&limit=4");
+        setCourses(response.data);
+      } catch (error) {
+        console.error("Failed to fetch featured courses:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchCourses();
+  }, []);
+
   return (<section className="py-20 lg:py-28 bg-background">
     <div className="container mx-auto px-4">
       {/* Section Header */}
@@ -85,11 +47,17 @@ const FeaturedCourses = () => {
       </div>
 
       {/* Course Grid */}
-      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {featuredCourses.map((course, index) => (<div key={course.id} className="animate-fade-up h-full" style={{ animationDelay: `${index * 0.1}s` }}>
-          <CourseCard {...course} />
-        </div>))}
-      </div>
+      {loading ? (
+        <div className="flex justify-center py-20">
+          <Loader2 className="w-8 h-8 animate-spin text-accent" />
+        </div>
+      ) : (
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {courses.map((course, index) => (<div key={course.id} className="animate-fade-up h-full" style={{ animationDelay: `${index * 0.1}s` }}>
+            <CourseCard {...course} />
+          </div>))}
+        </div>
+      )}
     </div>
   </section>);
 };

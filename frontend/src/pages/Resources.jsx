@@ -305,33 +305,7 @@ const Resources = () => {
 
 
                 {/* Newsletter / Feature */}
-                <section className="py-24 bg-accent/5">
-                    <div className="container mx-auto px-4">
-                        <div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-12 bg-card border border-border rounded-[3rem] p-12 overflow-hidden relative shadow-2xl">
-                            <div className="absolute top-0 right-0 w-64 h-64 bg-accent/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-                            <div className="flex-1 relative z-10 text-center md:text-left">
-                                <h2 className="text-3xl font-display font-bold mb-4">Want more resources?</h2>
-                                <p className="text-muted-foreground mb-8">
-                                    Subscribe to our weekly newsletter and get exclusive design assets and coding
-                                    cheatsheets straight to your inbox.
-                                </p>
-                                <div className="flex flex-col sm:flex-row gap-3">
-                                    <Input
-                                        type="email"
-                                        placeholder="Enter your email"
-                                        className="h-12 rounded-xl border-border bg-background"
-                                    />
-                                    <Button className="h-12 rounded-xl bg-accent px-8">Subscribe</Button>
-                                </div>
-                            </div>
-                            <div className="w-full md:w-1/3 flex justify-center">
-                                <div className="w-32 h-32 rounded-3xl bg-accent flex items-center justify-center rotate-12 shadow-glow">
-                                    <BookOpen className="w-16 h-16 text-white" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
+
             </main>
 
 

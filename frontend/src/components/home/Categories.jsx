@@ -1,46 +1,92 @@
-import { Link } from "react-router-dom";
-import { Code, Palette, TrendingUp, Camera, Music, Briefcase, Brain, Languages } from "lucide-react";
-const categories = [
+import { useState, useEffect } from "react";
+import { Code, Palette, TrendingUp, Briefcase, Brain, Shield, Cloud } from "lucide-react";
+import CategoryCard from "./CategoryCard";
+import api from "@/services/api";
+
+const initialCategories = [
   {
-    name: "Development",
+    name: "Web Development",
     icon: Code,
-    count: 156,
+    count: 0,
     color: "from-blue-500/20 to-cyan-500/20",
     hoverColor: "group-hover:text-blue-500",
   },
   {
-    name: "Design",
+    name: "Graphic Design",
     icon: Palette,
-    count: 89,
+    count: 0,
     color: "from-pink-500/20 to-rose-500/20",
     hoverColor: "group-hover:text-pink-500",
   },
   {
-    name: "Business",
+    name: "Business Strategy",
     icon: Briefcase,
-    count: 124,
+    count: 0,
     color: "from-amber-500/20 to-orange-500/20",
     hoverColor: "group-hover:text-amber-500",
   },
   {
-    name: "Marketing",
+    name: "Digital Marketing",
     icon: TrendingUp,
-    count: 78,
+    count: 0,
     color: "from-green-500/20 to-emerald-500/20",
     hoverColor: "group-hover:text-green-500",
   },
-
-
   {
     name: "Data Science",
     icon: Brain,
-    count: 92,
+    count: 0,
     color: "from-indigo-500/20 to-blue-500/20",
     hoverColor: "group-hover:text-indigo-500",
   },
-
+  {
+    name: "Artificial Intelligence",
+    icon: Brain,
+    count: 0,
+    color: "from-violet-500/20 to-purple-500/20",
+    hoverColor: "group-hover:text-violet-500",
+  },
+  {
+    name: "Cybersecurity",
+    icon: Shield,
+    count: 0,
+    color: "from-red-500/20 to-rose-500/20",
+    hoverColor: "group-hover:text-red-500",
+  },
+  {
+    name: "Cloud Computing",
+    icon: Cloud,
+    count: 0,
+    color: "from-sky-500/20 to-blue-500/20",
+    hoverColor: "group-hover:text-sky-500",
+  },
 ];
+
 const Categories = () => {
+  const [categories, setCategories] = useState(initialCategories);
+
+  useEffect(() => {
+    const fetchCategoryStats = async () => {
+      try {
+        const response = await api.get("/courses/stats/categories");
+        const stats = response.data;
+        const statsMap = stats.reduce((acc, curr) => {
+          acc[curr.name] = curr.count;
+          return acc;
+        }, {});
+
+        setCategories(prev => prev.map(cat => ({
+          ...cat,
+          count: statsMap[cat.name] || 0
+        })));
+      } catch (error) {
+        console.error("Error fetching category stats:", error);
+      }
+    };
+
+    fetchCategoryStats();
+  }, []);
+
   return (<section className="py-20 lg:py-28 bg-muted/30">
     <div className="container mx-auto px-4">
       {/* Section Header */}
@@ -58,24 +104,9 @@ const Categories = () => {
 
       {/* Categories Grid */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 lg:gap-6">
-        {categories.map((category, index) => (<Link key={category.name} to={`/courses?category=${category.name.toLowerCase()}`} className="animate-fade-up" style={{ animationDelay: `${index * 0.05}s` }}>
-          <div className={`group relative bg-card rounded-2xl p-6 border border-border hover:border-accent/30 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 overflow-hidden`}>
-            {/* Background gradient */}
-            <div className={`absolute inset-0 bg-gradient-to-br ${category.color} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
-
-            <div className="relative">
-              <div className={`w-12 h-12 rounded-xl bg-muted flex items-center justify-center mb-4 transition-colors ${category.hoverColor}`}>
-                <category.icon className="w-6 h-6" />
-              </div>
-              <h3 className="font-semibold text-foreground mb-1">
-                {category.name}
-              </h3>
-              <p className="text-sm text-muted-foreground">
-                {category.count} courses
-              </p>
-            </div>
-          </div>
-        </Link>))}
+        {categories.map((category, index) => (
+          <CategoryCard key={category.name} category={category} index={index} />
+        ))}
       </div>
     </div>
   </section>);

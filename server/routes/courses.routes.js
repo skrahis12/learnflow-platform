@@ -5,6 +5,7 @@ import {
   getMyCourses,
   getCourseDetails,
   getAllCourses,
+  getCategoriesWithStats,
 } from "../controllers/course.controller.js";
 import { authenticate } from "../middlewares/auth.middleware.js";
 import { authorize } from "../middlewares/authorize.middleware.js";
@@ -24,6 +25,9 @@ router.post(
   authorize("instructor", "admin"),
   createCourse
 );
+
+// ✅ GET CATEGORY STATS
+router.get("/stats/categories", getCategoriesWithStats);
 
 // ✅ GET ALL COURSES (PUBLIC)
 router.get("/", getAllCourses);
