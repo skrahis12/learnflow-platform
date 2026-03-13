@@ -119,7 +119,6 @@ export const getCourseDetails = async (req, res) => {
 };
 
 /* ================= PUBLIC COURSES ================= */
-/* ================= PUBLIC COURSES ================= */
 export const getAllCourses = async (req, res) => {
   try {
     const { search, category, level, sortBy } = req.query;

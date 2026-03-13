@@ -89,7 +89,7 @@ const Footer = () => {
 
       <div className="mt-12 pt-8 border-t border-border flex flex-col md:flex-row items-center justify-between gap-4">
         <p className="text-sm text-muted-foreground">
-          © 2024 LearnFlow. All rights reserved.
+          © 2026 LearnFlow. All rights reserved.
         </p>
         <p className="text-sm text-muted-foreground">
           Made with ❤️ for learners everywhere

@@ -61,36 +61,7 @@ const DashboardSidebar = ({ streak, downloads, user }) => {
                 </CardContent>
             </Card>
 
-            {/* Recent Activity */}
-            <Card>
-                <CardHeader>
-                    <CardTitle className="text-lg font-display">
-                        Recent Activity
-                    </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                    {recentActivity.map((activity, index) => (
-                        <div key={index} className="flex items-start gap-3">
-                            <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${activity.type === "lesson"
-                                ? "bg-accent/10 text-accent"
-                                : activity.type === "quiz"
-                                    ? "bg-success/10 text-success"
-                                    : "bg-warning/10 text-warning"
-                                }`}>
-                                {activity.type === "lesson" ? (<PlayCircle className="w-4 h-4" />) : activity.type === "quiz" ? (<Star className="w-4 h-4" />) : (<Award className="w-4 h-4" />)}
-                            </div>
-                            <div className="flex-1 min-w-0">
-                                <p className="text-sm text-foreground truncate">
-                                    {activity.title}
-                                </p>
-                                <p className="text-xs text-muted-foreground">
-                                    {activity.time}
-                                </p>
-                            </div>
-                        </div>
-                    ))}
-                </CardContent>
-            </Card>
+            {/* Recent Activity Removed */}
 
             {/* Recent Downloads */}
             <Card>
@@ -130,27 +101,7 @@ const DashboardSidebar = ({ streak, downloads, user }) => {
                 </CardContent>
             </Card>
 
-            {/* Calendar */}
-            <Card>
-                <CardHeader>
-                    <CardTitle className="text-lg font-display flex items-center gap-2">
-                        <Calendar className="w-5 h-5" />
-                        Upcoming
-                    </CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <div className="space-y-3">
-                        <div className="p-3 bg-muted rounded-lg">
-                            <p className="font-medium text-foreground text-sm">
-                                Assignment Due
-                            </p>
-                            <p className="text-xs text-muted-foreground">
-                                Friday, 11:59 PM
-                            </p>
-                        </div>
-                    </div>
-                </CardContent>
-            </Card>
+            {/* Upcoming Removed */}
         </div>
     );
 };

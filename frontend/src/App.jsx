@@ -23,6 +23,15 @@ import Downloads from "./pages/Downloads";
 import OAuthSuccess from "./pages/OAuthSuccess";
 import NotFound from "./pages/NotFound";
 import Settings from "./pages/Settings";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
+import Privacy from "./pages/Privacy";
+import Terms from "./pages/Terms";
+import Careers from "./pages/Careers";
+import Blog from "./pages/Blog";
+import Press from "./pages/Press";
+import Help from "./pages/Help";
+import Teach from "./pages/Teach";
 
 const queryClient = new QueryClient();
 
@@ -50,6 +59,18 @@ const AppContent = () => {
           <Route path="/downloads" element={<Downloads />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/oauth-success" element={<OAuthSuccess />} />
+
+          {/* Footer Pages */}
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/careers" element={<Careers />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/press" element={<Press />} />
+          <Route path="/help" element={<Help />} />
+          <Route path="/teach" element={<Teach />} />
+
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>

@@ -11,10 +11,19 @@ export const useLearningTime = () => {
 };
 
 export const LearningTimeProvider = ({ children }) => {
+    // Helper to get today's date string
+    const getTodayDate = () => new Date().toDateString();
+
     // Initialize from localStorage or default to 0
     const [learningTime, setLearningTime] = useState(() => {
-        const saved = localStorage.getItem("user_learning_time_v2");
-        return saved ? parseInt(saved) : 0;
+        const savedTime = localStorage.getItem("user_learning_time_v2");
+        const savedDate = localStorage.getItem("user_learning_date");
+        const today = getTodayDate();
+
+        if (savedDate === today && savedTime) {
+            return parseInt(savedTime);
+        }
+        return 0;
     });
 
     const [isActive, setIsActive] = useState(true);
@@ -57,6 +66,18 @@ export const LearningTimeProvider = ({ children }) => {
             const delta = now - lastTick;
             lastTick = now;
 
+            // Check for Day Reset
+            const today = getTodayDate();
+            const lastSavedDate = localStorage.getItem("user_learning_date");
+
+            if (lastSavedDate !== today) {
+                // It's a new day (or first run if missing)! Reset everything.
+                setLearningTime(0);
+                localStorage.setItem("user_learning_time_v2", 0);
+                localStorage.setItem("user_learning_date", today);
+                return; // Skip this tick
+            }
+
             const isPageVisible = document.visibilityState === 'visible';
             const isOnline = navigator.onLine;
             const isNotIdle = now - lastActivity < IDLE_TIMEOUT;
@@ -69,6 +90,7 @@ export const LearningTimeProvider = ({ children }) => {
                     // or if the difference is significant to avoid spamming IO
                     if (Math.floor(newTime / 1000) > Math.floor(prev / 1000)) {
                         localStorage.setItem("user_learning_time_v2", newTime);
+                        localStorage.setItem("user_learning_date", today);
                     }
                     return newTime;
                 });

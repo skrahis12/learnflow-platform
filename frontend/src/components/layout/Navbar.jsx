@@ -31,7 +31,7 @@ const Navbar = () => {
               <img src={`${import.meta.env.BASE_URL}logo.png`} alt="LearnFlow Icon" className="w-full h-full object-contain" />
             </div>
             <div className="h-8 md:h-10 flex items-center">
-              <img src={`${import.meta.env.BASE_URL}brand-text.png`} alt="LearnFlow" className="h-[70%] object-contain dark:brightness-200 brightness-0" />
+              <img src={`${import.meta.env.BASE_URL}brand-text.png`} alt="LearnFlow" className="h-[70%] object-contain dark:invert brightness-0 dark:brightness-100" />
             </div>
           </Link>
 

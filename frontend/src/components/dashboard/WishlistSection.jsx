@@ -17,18 +17,18 @@ const WishlistSection = () => {
             {wishlist.length === 0 ? (
                 <p className="text-muted-foreground italic">No courses in wishlist yet.</p>
             ) : (
-                <div className="grid md:grid-cols-2 gap-4">
+                <div className="space-y-4">
                     {wishlist.map((course) => (
                         <Link key={course.id} to={`/courses/${course.id}`}>
-                            <Card className="hover:shadow-lg hover:border-accent/30 transition-all duration-300 h-full">
-                                <CardContent className="p-4">
-                                    <div className="flex gap-4">
-                                        <img src={course.thumbnail} alt={course.title} className="w-20 h-20 rounded-lg object-cover" />
+                            <Card className="hover:shadow-lg hover:border-accent/30 transition-all duration-300">
+                                <CardContent className="p-3">
+                                    <div className="flex gap-3">
+                                        <img src={course.thumbnail} alt={course.title} className="w-16 h-16 rounded-lg object-cover flex-shrink-0" />
                                         <div className="flex-1 min-w-0">
-                                            <h3 className="font-semibold text-foreground truncate mb-1">
+                                            <h3 className="font-semibold text-sm text-foreground truncate mb-1">
                                                 {course.title}
                                             </h3>
-                                            <p className="text-sm text-muted-foreground mb-2">
+                                            <p className="text-xs text-muted-foreground mb-1">
                                                 {course.instructor.name || course.instructor}
                                             </p>
                                             <div className="flex items-center justify-between">
@@ -36,7 +36,7 @@ const WishlistSection = () => {
                                                     <Star className="w-3 h-3 fill-warning" />
                                                     {course.rating}
                                                 </div>
-                                                <span className="font-bold text-accent">
+                                                <span className="text-xs font-bold text-accent">
                                                     {course.price === 0 ? "Free" : `$${course.price}`}
                                                 </span>
                                             </div>

@@ -3,7 +3,7 @@ import FeaturedCourses from "@/components/home/FeaturedCourses";
 import Categories from "@/components/home/Categories";
 import Features from "@/components/home/Features";
 import Testimonials from "@/components/home/Testimonials";
-import CTASection from "@/components/home/CTASection";
+
 
 const Index = () => {
   return (
@@ -13,7 +13,6 @@ const Index = () => {
       <Categories />
       <Features />
       <Testimonials />
-      <CTASection />
     </div>
   );
 };

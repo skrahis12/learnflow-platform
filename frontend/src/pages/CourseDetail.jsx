@@ -20,26 +20,112 @@ const CourseDetail = () => {
   const [course, setCourse] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [currentVideoUrl, setCurrentVideoUrl] = useState(null);
 
   useEffect(() => {
-    const fetchCourseDetails = async () => {
-      try {
-        setLoading(true);
-        const response = await api.get(`/courses/${id}`);
-        // Response structure is { course: {...}, access: "..." }
-        setCourse(response.data.course);
-      } catch (err) {
-        console.error("Failed to load course details:", err);
-        setError("Failed to load course details");
-      } finally {
-        setLoading(false);
-      }
-    };
-
     if (id) {
+      // Fetch course details
+      const fetchCourseDetails = async () => {
+        try {
+          setLoading(true);
+          const response = await api.get(`/courses/${id}`);
+          setCourse(response.data.course);
+        } catch (err) {
+          console.error("Failed to load course details:", err);
+          setError("Failed to load course details");
+        } finally {
+          setLoading(false);
+        }
+      };
       fetchCourseDetails();
     }
   }, [id]);
+
+  // Track active lesson
+  const [activeLesson, setActiveLesson] = useState(null);
+
+  // Initialize active lesson from history if available, or default to first
+  useEffect(() => {
+    if (course) {
+      const history = JSON.parse(localStorage.getItem("user_learning_history") || "[]");
+      const historyItem = history.find(item => item.id === course.id);
+
+      if (historyItem && historyItem.lastLesson) {
+        setActiveLesson(historyItem.lastLesson);
+      }
+    }
+  }, [course]);
+
+  // Track completed lessons
+  const [completedLessons, setCompletedLessons] = useState([]);
+
+  // Initialize completed lessons from localStorage
+  useEffect(() => {
+    const saved = JSON.parse(localStorage.getItem("completed_lessons") || "[]");
+    setCompletedLessons(saved);
+  }, []);
+
+  const toggleLessonCompletion = (moduleId, lessonId, e) => {
+    e.stopPropagation(); // Prevent opening the lesson when clicking checkbox
+    const lessonKey = `${course.id}-${moduleId}-${lessonId}`;
+    let newCompleted;
+
+    if (completedLessons.includes(lessonKey)) {
+      newCompleted = completedLessons.filter(id => id !== lessonKey);
+    } else {
+      newCompleted = [...completedLessons, lessonKey];
+    }
+
+    setCompletedLessons(newCompleted);
+    localStorage.setItem("completed_lessons", JSON.stringify(newCompleted));
+  };
+
+  // Save to History when course OR active lesson changes
+  useEffect(() => {
+    if (course) {
+      try {
+        const historyItem = {
+          id: course.id,
+          title: course.title,
+          thumbnail: course.thumbnail,
+          instructor: course.instructorName || "Instructor",
+          lastAccessed: Date.now(),
+          progress: 0, // Default to 0 if not tracking specific progress yet
+          totalLessons: course.lessonsCount || 0,
+          lastLesson: {
+            ...activeLesson,
+            videoUrl: activeLesson.videoUrl || course.videoUrl || "https://www.youtube.com/embed/dQw4w9WgXcQ"
+          } // Save the active lesson info with guaranteed videoUrl
+        };
+
+        const history = JSON.parse(localStorage.getItem("user_learning_history") || "[]");
+
+        // Remove existing entry for this course if it exists (to move it to top)
+        const newHistory = history.filter(item => item.id !== course.id);
+
+        // Add to beginning
+        newHistory.unshift(historyItem);
+
+        // Keep only last 5
+        if (newHistory.length > 5) newHistory.pop();
+
+        localStorage.setItem("user_learning_history", JSON.stringify(newHistory));
+      } catch (error) {
+        console.error("Failed to save history", error);
+      }
+    }
+  }, [course, activeLesson]);
+
+  // Effect to update current video when active lesson changes or initializes
+  useEffect(() => {
+    if (activeLesson && activeLesson.videoUrl) {
+      setCurrentVideoUrl(activeLesson.videoUrl);
+      setShowPreview(true); // Auto-show video player
+    } else if (course && course.videoUrl && !currentVideoUrl) {
+      // Default to course preview if nothing active
+      setCurrentVideoUrl(course.videoUrl);
+    }
+  }, [activeLesson, course]);
 
   if (loading) {
     return (
@@ -79,8 +165,29 @@ const CourseDetail = () => {
       {
         title: "Course Overview",
         lessons: [
-          { title: "Introduction", duration: "10:00", preview: true },
-          { title: "Getting Started", duration: "15:00", preview: false },
+          {
+            title: "Introduction",
+            duration: "10:00",
+            preview: true,
+            videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ" // Rick Roll for demo, or better a real tutorial
+          },
+          {
+            title: "Getting Started",
+            duration: "15:00",
+            preview: true, // Changed to true for demo
+            videoUrl: "https://www.youtube.com/embed/SqcY0GlETPk" // React Tutorial
+          },
+        ]
+      },
+      {
+        title: "Fundamentals",
+        lessons: [
+          {
+            title: "Core Concepts",
+            duration: "20:00",
+            preview: true,
+            videoUrl: "https://www.youtube.com/embed/Ke90Tje7VS0" // React Components
+          }
         ]
       }
     ],
@@ -89,6 +196,8 @@ const CourseDetail = () => {
     language: "English",
     lastUpdated: "January 2025"
   };
+
+
 
   const isWishlisted = isInWishlist(courseData.id);
 
@@ -113,10 +222,10 @@ const CourseDetail = () => {
             <Badge className="mb-4 bg-accent/20 text-accent border-accent/30">
               {courseData.category}
             </Badge>
-            <h1 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-primary-foreground mb-4">
+            <h1 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
               {courseData.title}
             </h1>
-            <p className="text-lg text-primary-foreground/80 mb-6">
+            <p className="text-lg text-white/80 mb-6">
               {courseData.subtitle}
             </p>
 
@@ -124,14 +233,14 @@ const CourseDetail = () => {
             <div className="flex flex-wrap items-center gap-4 mb-6">
               <div className="flex items-center gap-1">
                 <Star className="w-5 h-5 text-warning fill-warning" />
-                <span className="font-semibold text-primary-foreground">
+                <span className="font-semibold text-white">
                   {courseData.rating}
                 </span>
-                <span className="text-primary-foreground/60">
+                <span className="text-white/60">
                   ({courseData.ratingsCount.toLocaleString()} ratings)
                 </span>
               </div>
-              <div className="flex items-center gap-1 text-primary-foreground/80">
+              <div className="flex items-center gap-1 text-white/80">
                 <Users className="w-4 h-4" />
                 {courseData.studentsCount.toLocaleString()} students
               </div>
@@ -141,11 +250,11 @@ const CourseDetail = () => {
             <div className="flex items-center gap-3">
               <img src={courseData.instructor.avatar} alt={courseData.instructor.name} className="w-12 h-12 rounded-full border-2 border-accent/30" />
               <div>
-                <p className="text-primary-foreground font-medium">
+                <p className="text-white font-medium">
                   Created by{" "}
                   <span className="text-accent">{courseData.instructor.name}</span>
                 </p>
-                <div className="flex flex-wrap items-center gap-4 text-sm text-primary-foreground/60">
+                <div className="flex flex-wrap items-center gap-4 text-sm text-white/60">
                   <span className="flex items-center gap-1">
                     <Clock className="w-4 h-4" />
                     {courseData.duration}
@@ -183,7 +292,7 @@ const CourseDetail = () => {
                   <iframe
                     width="100%"
                     height="100%"
-                    src={`${courseData.videoUrl}${courseData.videoUrl.includes('?') ? '&' : '?'}autoplay=1&rel=0&modestbranding=1`}
+                    src={`${currentVideoUrl || courseData.videoUrl}${currentVideoUrl?.includes('?') ? '&' : '?'}autoplay=1&rel=0&modestbranding=1`}
                     title={courseData.title}
                     frameBorder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -195,7 +304,19 @@ const CourseDetail = () => {
                     <img src={courseData.thumbnail} alt={courseData.title} className="w-full h-full object-cover" />
                     <div className="absolute inset-0 bg-foreground/40 flex items-center justify-center">
                       <button
-                        onClick={() => setShowPreview(true)}
+                        onClick={() => {
+                          setShowPreview(true);
+                          // Set first lesson/intro as active if nothing else selected
+                          if (!activeLesson && courseData.modules[0]?.lessons[0]) {
+                            setActiveLesson({
+                              title: courseData.modules[0].lessons[0].title,
+                              duration: courseData.modules[0].lessons[0].duration,
+                              moduleId: 0,
+                              lessonId: 0,
+                              videoUrl: courseData.modules[0].lessons[0].videoUrl // Pass video URL
+                            });
+                          }
+                        }}
                         className="w-16 h-16 rounded-full gradient-accent flex items-center justify-center shadow-glow hover:scale-110 transition-transform"
                       >
                         <PlayCircle className="w-8 h-8 text-accent-foreground" />
@@ -292,10 +413,33 @@ const CourseDetail = () => {
                     </div>
                   </AccordionTrigger>
                   <AccordionContent className="px-0 pb-0">
-                    {module.lessons.map((lesson, lessonIndex) => (<div key={lessonIndex} className="flex items-center justify-between px-6 py-3 border-t border-border hover:bg-muted/30 transition-colors">
+                    {module.lessons.map((lesson, lessonIndex) => (<div key={lessonIndex}
+                      onClick={() => {
+                        if (lesson.preview || true) { // Allow clicking all for tracking demo, usually check permissions
+                          setActiveLesson({
+                            title: lesson.title,
+                            duration: lesson.duration,
+                            moduleId: moduleIndex,
+                            lessonId: lessonIndex,
+                            videoUrl: lesson.videoUrl // Pass the video URL!
+                          });
+                        }
+                      }}
+                      className={`flex items-center justify-between px-6 py-3 border-t border-border hover:bg-muted/30 transition-colors cursor-pointer ${activeLesson?.title === lesson.title ? "bg-accent/10 border-l-4 border-l-accent" : ""}`}>
                       <div className="flex items-center gap-3">
+                        <div
+                          onClick={(e) => toggleLessonCompletion(moduleIndex, lessonIndex, e)}
+                          className={`w-5 h-5 rounded-full border flex items-center justify-center cursor-pointer transition-colors ${completedLessons.includes(`${course.id}-${moduleIndex}-${lessonIndex}`)
+                              ? "bg-success border-success text-white"
+                              : "border-muted-foreground hover:border-accent"
+                            }`}
+                        >
+                          {completedLessons.includes(`${course.id}-${moduleIndex}-${lessonIndex}`) && <CheckCircle className="w-3.5 h-3.5" />}
+                        </div>
                         {lesson.preview ? (<PlayCircle className="w-4 h-4 text-accent" />) : (<Lock className="w-4 h-4 text-muted-foreground" />)}
-                        <span className="text-foreground">{lesson.title}</span>
+                        <span className={`text-foreground ${completedLessons.includes(`${course.id}-${moduleIndex}-${lessonIndex}`) ? "line-through opacity-70" : ""}`}>
+                          {lesson.title}
+                        </span>
                         {lesson.preview && (<Badge variant="secondary" className="text-xs">
                           Preview
                         </Badge>)}

@@ -72,24 +72,24 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <div className="w-full bg-muted/30">
-      <main className="pt-24 pb-16">
+    <div className="w-full bg-muted/30 dark:bg-background">
+      <main className="pt-20 lg:pt-24 pb-16">
         <div className="container mx-auto px-4">
           <WelcomeHeader user={user} />
 
           <StatsGrid />
 
-          <div className="grid lg:grid-cols-3 gap-8">
+          <div className="grid lg:grid-cols-3 gap-6 lg:gap-8">
             {/* Main Content */}
             <div className="lg:col-span-2 space-y-8">
               <ContinueLearning />
-              <WishlistSection />
               <CodeWithFun />
             </div>
 
             {/* Sidebar */}
-            <div>
+            <div className="space-y-8">
               <DashboardSidebar streak={streak} downloads={downloads} user={user} />
+              <WishlistSection />
             </div>
           </div>
         </div>
