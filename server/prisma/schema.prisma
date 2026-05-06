@@ -1,0 +1,127 @@
+// server/prisma/schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String @id @default(uuid())
+  name     String
+  email    String @unique
+  password String
+  role     String @default("student")
+  twoFactorEnabled Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  enrollments   Enrollment[]
+  courses       Course[]
+  subscriptions Subscription[]
+  
+  // Interactions
+  likes         CourseLike[]
+  followers     InstructorFollow[] @relation("Instructor")
+  following     InstructorFollow[] @relation("Follower")
+  testimonials  Testimonial[]
+}
+
+model Course {
+  id           String       @id @default(uuid())
+  title        String
+  description  String?
+  price        Int // 0 = free, >0 = paid
+  videoUrl     String?
+  thumbnail    String?
+  
+  // Metadata
+  rating       Float        @default(0)
+  studentsCount Int         @default(0)
+  views        String?
+  likesCount   String?      // Display string like "1.5K"
+  likes        CourseLike[]
+  duration     String?
+  level        String?
+  category     String?
+  instructorName String?    @default("LearnFlow Instructor")
+
+
+  instructor   User         @relation(fields: [instructorId], references: [id])
+  instructorId String
+  enrollments  Enrollment[]
+  hidden       Boolean      @default(false) 
+  createdAt    DateTime     @default(now())
+}
+
+model Enrollment {
+  id        String   @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  course    Course   @relation(fields: [courseId], references: [id])
+  courseId  String
+  createdAt DateTime @default(now())
+
+  @@unique([userId, courseId])
+}
+
+model Plan {
+  id        String   @id @default(uuid())
+  name      String
+  price     Int // monthly price in INR
+  duration  String // "monthly" | "yearly"
+  createdAt DateTime @default(now())
+
+  subscriptions Subscription[]
+}
+
+model Subscription {
+  id        String   @id @default(uuid())
+  userId    String
+  planId    String
+  status    String // active | expired
+  expiresAt DateTime
+
+  user User @relation(fields: [userId], references: [id])
+  plan Plan @relation(fields: [planId], references: [id])
+}
+
+model CourseLike {
+  id        String   @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  course    Course   @relation(fields: [courseId], references: [id])
+  courseId  String
+  createdAt DateTime @default(now())
+
+  @@unique([userId, courseId])
+}
+
+model InstructorFollow {
+  id           String   @id @default(uuid())
+  follower     User     @relation("Follower", fields: [followerId], references: [id])
+  followerId   String
+  instructor   User     @relation("Instructor", fields: [instructorId], references: [id])
+  instructorId String
+  createdAt    DateTime @default(now())
+
+  @@unique([followerId, instructorId])
+}
+
+
+model Testimonial {
+  id        String   @id @default(uuid())
+  name      String
+  role      String
+  content   String
+  rating    Int
+  avatar    String?
+  visible   Boolean  @default(true)
+  createdAt DateTime @default(now())
+  
+  userId    String? 
+  user      User?    @relation(fields: [userId], references: [id])
+}
