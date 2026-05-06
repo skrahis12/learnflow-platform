@@ -1,5 +1,5 @@
 {
-    "name": "learnflow-platform-root",
+    "name": "learnflow-platform",
     "version": "1.0.0",
     "description": "Root package for LearnFlow Platform",
     "scripts": {
