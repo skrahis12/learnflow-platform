@@ -28,5 +28,5 @@ export default defineConfig({
             "@": path.resolve(__dirname, "./src"),
         },
     },
-    base:"./learnflow-platform/",
+    base: "/learnflow-platform/",
 });
